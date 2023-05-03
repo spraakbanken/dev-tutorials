@@ -4,4 +4,4 @@ target/
 
 *.dat
 
-
+/data/

@@ -56,3 +56,34 @@ Elapsed time: 0.7634601149984519 s
 Memory usage:
 ![Memory usage of python program](./python_memory_usage.png)
 
+## Rewrite that in rust
+
+We begin with that timings,
+
+### Setting up a cargo project
+
+`cargo` is Rust's package manager, we can create a project:
+```bash
+> cargo new read-json-in-rust
+    Created binary (application) `read-json-in-rust` package
+```
+
+If we `cd` into the directory we can run our application:
+```bash
+> cd read-json-in-rust
+> cargo run
+   Compiling read-json-in-rust v0.1.0 (.../read-json-in-rust)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.85s
+     Running `target/debug/read-json-in-rust`
+Hello, world!
+```
+
+Working correctly, and this is the code:
+```rust
+fn main() {
+    println!("Hello, world!");
+}
+```
+
+We have a function (`fn`) `main` that uses a macro (invoked with `!` after) to print `Hello, world!` with new-line to `stdout`.
+The macro is because rust functions can't handle variadic functions, but rust macros can.
