@@ -345,9 +345,9 @@ After a successful `cargo run` we can look at our files:
 ```bash
 > ls -l data
 .rw-r--r-- 17M kristoffer  2 maj 14:36  skbl.json
-.rw-r--r-- 16M kristoffer  2 maj 15:14  skbl2.json
+.rw-r--r-- 16M kristoffer  2 maj 15:14  skbl2_rust.json
 ```
 
 Ok, we created the file, but it is smaller, why is that?
 
-Inspections gives that `skbl.json` is written with ascii and `skbl2.json` uses utf-8.
+Inspections gives that `skbl.json` is written with ascii and `skbl2_rust.json` uses utf-8.
