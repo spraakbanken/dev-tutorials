@@ -1,4 +1,3 @@
-// use serde_json::Value;
 use std::fs::File;
 use std::io::BufWriter;
 use std::io::Read;
@@ -9,49 +8,30 @@ use serde_json::Value;
 fn main() {
     let start = Instant::now();
 
-    let data_source = load_from_file("data/skbl.json");
+    let mut data_source = load_from_file("data/skbl.json");
 
-    // fn doc_update(doc: &mut Value) {
-    //     doc["_source"]["lexiconName"] = "skbl2".into();
-    //     doc["_source"]["lexiconOrder"] = 48.into();
-    // }
+    fn doc_update(doc: &mut Value) {
+        doc["_source"]["lexiconName"] = "skbl2".into();
+        doc["_source"]["lexiconOrder"] = 48.into();
+    }
 
-    // for doc in data_source.as_array_mut().expect("not an array").iter_mut() {
-    //     doc_update(doc);
-    // }
-    let updated_data = data_source;
-    dump_to_file(&updated_data, "data/skbl2_rust.json");
-    let elapsed = Instant::now() - start;
-    println!("Elapsed time {elapsed:?}");
+    for doc in &mut data_source {
+        doc_update(doc);
+    }
+    dump_to_file(&data_source, "data/skbl2_rust.json");
+    println!("Elapsed time {:?}", start.elapsed());
 }
 
-fn load_from_file(path: &str) -> Value {
+fn load_from_file(path: &str) -> Vec<Value> {
     let mut content = String::new();
     File::open(path)
-        .expect("failed to open file")
+        .expect("a valid path")
         .read_to_string(&mut content)
-        .expect("failed to read file");
-    serde_json::from_str(&content).expect("failed to parse json")
+        .expect("a valid JSON file");
+    serde_json::from_str(&content).expect("successfully parsed json")
 }
-// fn main_goal() {
-//     let mut data_source = load_from_file("data/skbl.json");
 
-//     fn doc_update(doc: &mut Value) -> &mut Value {
-//         doc["_source"]["lexiconName"] = "skbl2".into();
-//         doc["_source"]["lexiconOrder"] = 48.into();
-//         doc
-//     }
-
-//     let updated_data = data_source
-//         .as_array_mut()
-//         .expect("not an array")
-//         .iter_mut()
-//         .map(doc_update)
-//         .collect();
-//     dump_to_file(&updated_data, "data/skbl2.json");
-// }
-
-fn dump_to_file(value: &Value, path: &str) {
+fn dump_to_file(value: &[Value], path: &str) {
     let writer = BufWriter::new(File::create(path).expect("failed to create file"));
     serde_json::to_writer(writer, value).expect("failed to serialize json")
 }
