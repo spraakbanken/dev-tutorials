@@ -15,9 +15,9 @@ def main():
 
     for doc in data_source:
         doc_update(doc)
-    dump_to_file(data_source, "data/skbl2_py.json")
+    dump_to_file(data_source, "data/skbl2_python.json")
 
-    end  =time.perf_counter()
+    end = time.perf_counter()
     print(f"Elapsed time: {end-start} s")
 
 
