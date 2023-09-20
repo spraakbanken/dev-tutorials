@@ -1,5 +1,6 @@
 use std::fs::File;
 use std::io::BufWriter;
+
 use std::io::Read;
 use std::time::Instant;
 
@@ -11,8 +12,8 @@ fn main() {
     let mut data_source = load_from_file("data/skbl.json");
 
     fn doc_update(doc: &mut Value) {
-        doc["_source"]["lexiconName"] = "skbl2".into();
-        doc["_source"]["lexiconOrder"] = 48.into();
+        doc["lexiconName"] = "skbl2".into();
+        doc["lexiconOrder"] = 48.into();
     }
 
     for doc in &mut data_source {

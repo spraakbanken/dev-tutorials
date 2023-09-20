@@ -1,10 +1,19 @@
 # Read JSON in Rust
 
+> [!NOTE]
+> Updated to use published data instead.
+
 [Rust](https://www.rust-lang.org/) is a system-level programming language that is compiled ahead of time (like Java, Go, C, C++ ,...).
 
 In this tutorial we are going to read JSON, update the data and write to a new file.
 
 You can follow along at your own computer or at [replit.com](https://replit.com)
+
+## Download data
+
+To run the examples, you need some data to work on, the [Makefile](./Makefile) includes recipes to download skbl.json from https://spraakbanken.gu.se and extract the array `entries` using [jq](https://jqlang.github.io/jq/), `make download-data`.
+
+The dataset includes 2059 entries and weights 39 Mb in compacted form.
 
 ## Python example
 
@@ -22,16 +31,16 @@ def main():
     data_source = load_from_file("data/skbl.json")
 
     def doc_update(doc):
-        doc["_source"]["lexiconName"] = "skbl2"
-        doc["_source"]["lexiconOrder"] = 48
+        doc["lexiconName"] = "skbl2"
+        doc["lexiconOrder"] = 48
         return doc
 
     for doc in data_source:
         doc_update(doc)
 
-    dump_to_file(data_source, "data/skbl2_py.json")
+    dump_to_file(data_source, "data/skbl2_python.json")
 
-    elapsed  = time.perf_counter() - start
+    elapsed = time.perf_counter() - start
     print(f"Elapsed time: {elapsed} s")
 
 
@@ -51,7 +60,7 @@ if __name__ == "__main__":
 When running it we get this:
 ```bash
 > python read_json_in_rust.py
-Elapsed time: 0.7634601149984519 s
+Elapsed time: 1.792407828004798 s
 ```
 Memory usage:
 ![Memory usage of python program](./python_memory_usage.png)
@@ -97,8 +106,7 @@ use std::time::Instant;
 fn main() {
     let start = Instant::now();
 
-    let elapsed = Instant::now() - start;
-    println!("Elapsed time {elapsed:?}");
+    println!("Elapsed time {:?}", start.elapsed());
 }
 ```
 
@@ -245,10 +253,10 @@ warning: unused variable: `data_source`
 warning: `read-json-in-rust` (bin "read-json-in-rust") generated 2 warnings (run `cargo fix --bin "read-json-in-rust"` to apply 1 suggestion)
     Finished dev [unoptimized + debuginfo] target(s) in 0.45s
      Running `target/debug/read-json-in-rust`
-Elapsed time 15.914714056s
+Elapsed time 37.309493395s
 ```
 
-Ouch, more than 15 seconds, something must be wrong.
+Ouch, more than 37 seconds, something must be wrong.
 
 Yes, by looking in [the `serde_json` docs for `from_reader`](https://docs.rs/serde_json/latest/serde_json/fn.from_reader.html) we can read:
 > When reading from a source against which short reads are not efficient, such as a File, you will want to apply your own buffering because serde_json will not buffer the input. See std::io::BufReader.
@@ -264,7 +272,7 @@ use serde_json::Value;
 fn load_from_file(path: &str) -> Value {
     let file = File::open(path).expect("a valid path");
     let reader = BufReader::new(file); // (2)
-    serde_json::from_reader(file).expect("successfully parsed JSON")
+    serde_json::from_reader(reader).expect("successfully parsed JSON")
 }
 ```
 
@@ -286,10 +294,10 @@ warning: unused variable: `data_source`
 warning: `read-json-in-rust` (bin "read-json-in-rust") generated 2 warnings (run `cargo fix --bin "read-json-in-rust"` to apply 1 suggestion)
     Finished dev [unoptimized + debuginfo] target(s) in 0.69s
      Running `target/debug/read-json-in-rust`
-Elapsed time 1.749004778s
+Elapsed time 3.713371222s
 ```
 
-Ok, some improvment, from 15.9s to 1.75s, but still twice as slow as `Python`. But let's not bother about that yet.
+Ok, some improvment, from 37.3s to 3.71s, but still twice as slow as `Python`. But let's not bother about that yet.
 
 ## Dump JSON
 
@@ -318,21 +326,22 @@ After a successful `cargo run` we can look at our files:
 
 ```bash
 > ls -l data
-.rw-r--r-- 17M kristoffer  2 maj 14:36  skbl.json
-.rw-r--r-- 16M kristoffer  2 maj 15:14  skbl2_rust.json
+.rw-r--r-- 39M kristoffer  2 maj 14:36  skbl.json
+.rw-r--r-- 42M kristoffer 20 sep 10:27  skbl2_python.json
+.rw-r--r-- 39M kristoffer  2 maj 15:14  skbl2_rust.json
 ```
 
-Ok, we created the file, but it is smaller, why is that?
+Ok, we created the file `skbl2_rust.json`, but it is smaller than `skbl2_python.json`, why is that?
 
-Inspections gives that `skbl.json` is written with ascii and `skbl2_rust.json` uses utf-8.
+Inspections gives that `skbl2_python.json` is written with ascii and `skbl2_rust.json` uses utf-8.
 
 ## Update the data
 
 And of course we want to update the data also. How did we do it in python?
 ```python
     def doc_update(doc):
-        doc["_source"]["lexiconName"] = "skbl2"
-        doc["_source"]["lexiconOrder"] = 48
+        doc["lexiconName"] = "skbl2"
+        doc["lexiconOrder"] = 48
         return doc
 
     for doc in data_source:
@@ -344,8 +353,8 @@ Seems simple, we update the documents in `data_source` directly, let's try that 
 
 ```rust
     fn doc_update(doc: Value) {
-        doc["_source"]["lexiconName"] = "skbl2";
-        doc["_source"]["lexiconOrder"] = 48;
+        doc["lexiconName"] = "skbl2";
+        doc["lexiconOrder"] = 48;
     }
 
     for doc in data_source {
@@ -370,20 +379,20 @@ error[E0277]: `Value` is not an iterator
 error[E0308]: mismatched types
   --> src/main.rs:14:41
    |
-14 |         doc["_source"]["lexiconName"] = "skbl2";
+14 |         doc["lexiconName"] = "skbl2";
    |         -----------------------------   ^^^^^^^ expected `Value`, found `&str`
    |         |
    |         expected due to the type of this binding
    |
 help: call `Into::into` on this expression to convert `&'static str` into `Value`
    |
-14 |         doc["_source"]["lexiconName"] = "skbl2".into();
+14 |         doc["lexiconName"] = "skbl2".into();
    |                                                +++++++
 
 error[E0308]: mismatched types
   --> src/main.rs:15:42
    |
-15 |         doc["_source"]["lexiconOrder"] = 48;
+15 |         doc["lexiconOrder"] = 48;
    |         ------------------------------   ^^ expected `Value`, found integer
    |         |
    |         expected due to the type of this binding
@@ -403,8 +412,8 @@ We begin with the errors `error[E0308]: mismatched types`, the compiler suggests
 So let's follow the help.
 ```rust
     fn doc_update(doc: Value) {
-        doc["_source"]["lexiconName"] = "skbl2".into();
-        doc["_source"]["lexiconOrder"] = 48.into();
+        doc["lexiconName"] = "skbl2".into();
+        doc["lexiconOrder"] = 48.into();
     }
 
     for doc in data_source {
@@ -452,8 +461,8 @@ Rust's `enum`s are quite powerful that let's us associate different types with t
 So adding that gives us:
 ```rust
     fn doc_update(doc: Value) {
-        doc["_source"]["lexiconName"] = "skbl2".into();
-        doc["_source"]["lexiconOrder"] = 48.into();
+        doc["lexiconName"] = "skbl2".into();
+        doc["lexiconOrder"] = 48.into();
     }
 
     for doc in data_source.as_array().expect("an array") {
@@ -492,8 +501,8 @@ Here the suggestion doesn't work for us, we want a borrow to update the document
 So let's try to change `doc_update` to take a borrow.
 ```rust
     fn doc_update(doc: &Value) {
-        doc["_source"]["lexiconName"] = "skbl2".into();
-        doc["_source"]["lexiconOrder"] = 48.into();
+        doc["lexiconName"] = "skbl2".into();
+        doc["lexiconOrder"] = 48.into();
     }
 
     for doc in data_source.as_array().expect("an array") {
@@ -508,7 +517,7 @@ And running it:
 error[E0596]: cannot borrow `*doc` as mutable, as it is behind a `&` reference
   --> src/main.rs:14:9
    |
-14 |         doc["_source"]["lexiconName"] = "skbl2".into();
+14 |         doc["lexiconName"] = "skbl2".into();
    |         ^^^ `doc` is a `&` reference, so the data it refers to cannot be borrowed as mutable
    |
 help: consider changing this to be a mutable reference
@@ -519,7 +528,7 @@ help: consider changing this to be a mutable reference
 error[E0596]: cannot borrow `*doc` as mutable, as it is behind a `&` reference
   --> src/main.rs:15:9
    |
-15 |         doc["_source"]["lexiconOrder"] = 48.into();
+15 |         doc["lexiconOrder"] = 48.into();
    |         ^^^ `doc` is a `&` reference, so the data it refers to cannot be borrowed as mutable
    |
 help: consider changing this to be a mutable reference
@@ -539,8 +548,8 @@ So now we aren't allowed to change doc through a `&Value` reference, but we need
 So if `doc_update` takes a mutable reference
 ```rust
     fn doc_update(doc: &mut Value) {
-        doc["_source"]["lexiconName"] = "skbl2".into();
-        doc["_source"]["lexiconOrder"] = 48.into();
+        doc["lexiconName"] = "skbl2".into();
+        doc["lexiconOrder"] = 48.into();
     }
 
     for doc in data_source.as_array().expect("an array") {
@@ -579,8 +588,8 @@ the `doc` in the `for`-loop is not mutable. So we need the `data_source` as an m
 Let's use that.
 ```rust
     fn doc_update(doc: &mut Value) {
-        doc["_source"]["lexiconName"] = "skbl2".into();
-        doc["_source"]["lexiconOrder"] = 48.into();
+        doc["lexiconName"] = "skbl2".into();
+        doc["lexiconOrder"] = 48.into();
     }
 
     for doc in data_source.as_array_mut().expect("an array") {
@@ -618,10 +627,10 @@ And, bang, it works!
    Compiling read-json-in-rust v0.1.0 (.../dev-tutorials/read-json-in-rust)
     Finished dev [unoptimized + debuginfo] target(s) in 0.31s
      Running `target/debug/read-json-in-rust`
-Elapsed time 2.097109881s
+Elapsed time 4.908370832s
 ```
 
-But the time it took, 2.09 s, what can be done about that?
+But the time it took, almost 5 seconds, what can be done about that?
 
 ## Optimizations
 Let's try with some optimizations, we turn them on by passing `--release` to `cargo run`.
@@ -635,7 +644,7 @@ Let's try with some optimizations, we turn them on by passing `--release` to `ca
    Compiling read-json-in-rust v0.1.0 (.../dev-tutorials/read-json-in-rust)
     Finished release [optimized] target(s) in 4.93s
      Running `target/release/read-json-in-rust`
-Elapsed time 332.653414ms
+Elapsed time 687.616607ms
 ```
 
 Ok, that was better!
@@ -648,13 +657,15 @@ The measure memory usage with [memory-profiler](https://pypi.org/project/memory-
 > mprof run target/release/read-json-in-rust
 mprof: Sampling memory every 0.1s
 running new process
-Elapsed time 298.095577ms
+Elapsed time 730.408381ms
 ```
 Memory usage for the rust program:
 ![Memory usage of rust program](./rust_release_memory_usage.png)
 
-Memory usage for the python program:
+And as reference, the memory usage for the python program:
 ![Memory usage of python program](./python_memory_usage.png)
+
+Rust use slightly more memory but their memory usage is in the same magnitude.
 
 ### Read file to a string
 Sometimes the loading can be improved by reading the whole file to a `String`. Let's try that:
@@ -718,10 +729,15 @@ So let bring it in scope by adding `use std::io::Read`.
    Compiling read-json-in-rust v0.1.0 (.../dev-tutorials/read-json-in-rust)
     Finished release [optimized] target(s) in 0.56s
      Running `target/release/read-json-in-rust`
-Elapsed time 188.196532ms
+Elapsed time 425.541856ms
 ```
 
 Yes, that improved the running time.
+
+How is the memory usage changed?
+
+![Memory usage of rust program read all content to String](./rust_release_string_memory_usage.png)
+
 
 ### Deserialize to Vec directly
 
@@ -751,10 +767,14 @@ Does it matter?
 > cargo run --release
     Finished release [optimized] target(s) in 0.01s
      Running `target/release/read-json-in-rust`
-Elapsed time 188.792043ms
+Elapsed time 408.153712ms
 ```
 
 No, not for the speed. So you can choose what fits your program best.
+
+## Conclusion
+
+We have ported a simple Python program to Rust and seen a speedup by 2.5 to 4.4 times.
 
 ## Next steps
 
