@@ -778,7 +778,7 @@ We have ported a simple Python program to Rust and seen a speedup by 2.5 to 4.4 
 
 ## Next steps
 
-- We read the whole find to memory, for large files it is needed to only read a document at a time and then write the updated to a the file.
+- We read the whole find to memory, for large files it is needed to only read a document at a time and then write the updated to a the file. [Streaming tutorial](./streaming.md)
 - We read the documents as JSON value, we can also validate the data while deserializing.
 - We should handle errors better (and report them to the user).
 

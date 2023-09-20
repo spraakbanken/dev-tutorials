@@ -8,8 +8,8 @@ def main():
     data_source = json_iter.load_from_file("data/skbl.json")
 
     def doc_update(doc):
-        doc["_source"]["lexiconName"] = "skbl2"
-        doc["_source"]["lexiconOrder"] = 48
+        doc["lexiconName"] = "skbl2"
+        doc["lexiconOrder"] = 48
         return doc
 
     update_data = (doc_update(doc) for doc in data_source)

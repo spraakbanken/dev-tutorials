@@ -6,8 +6,11 @@ data/skbl.json: data/skbl.raw.json
 data/skbl.raw.json:
 	wget https://svn.spraakdata.gu.se/sb-arkiv/pub/skbl/skbl.json -O $@
 
+install-python: .venv
+	.venv/bin/pip install json-streams
+
 install-memory-profiler: .venv
 	.venv/bin/pip install memory-profiler
 
 .venv:
-	python -m venv $@
+	@test -d $@ || python -m venv $@

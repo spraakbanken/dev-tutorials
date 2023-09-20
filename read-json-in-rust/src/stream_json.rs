@@ -8,8 +8,8 @@ fn main() {
     let data_source = json_iter::load_from_file("data/skbl.json");
 
     fn doc_update(mut doc: Value) -> Value {
-        doc["_source"]["lexiconName"] = "skbl2".into();
-        doc["_source"]["lexiconOrder"] = 48.into();
+        doc["lexiconName"] = "skbl2".into();
+        doc["lexiconOrder"] = 48.into();
         doc
     }
 
@@ -19,6 +19,7 @@ fn main() {
 }
 
 pub mod json_iter {
+    use serde_json::Value;
     use std::io::BufWriter;
     use std::{fs::File, io::BufReader};
     use struson::reader::{JsonReader, JsonStreamReader};
