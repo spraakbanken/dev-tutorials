@@ -65,7 +65,7 @@ Elapsed time: 1.792407828004798 s
 Memory usage:
 ![Memory usage of python program](./python_memory_usage.png)
 
-## Rewrite that in rust
+## Rewrite that in Rust
 
 We begin with that timings,
 
@@ -111,7 +111,7 @@ fn main() {
 ```
 
 All variable must be declared with `let`.
-The notation `"{elapsed:?}"` tells rust to use the `Debug` formatter for `Instant`, that is implemented for the most types, but for many types the standard `Display` formatter isn't not implemented (so is the case for `Instant`).
+The notation `"{:?}"` tells rust to use the `Debug` formatter for `Instant`, that is implemented for the most types, but for many types the standard `Display` formatter isn't not implemented (so is the case for `Instant`).
 
 ### function load_from_file
 
@@ -131,7 +131,7 @@ fn load_from_file(path: &str) {
 }
 ```
 
-**Notes:** `str` is the string slice type in rust, and `&` is a reference (borrow) to, in this case, a string slice. So `load_from_file` borrows the string slice from it's caller.
+**Notes:** `str` is the string slice type in rust, and `&` is a reference (borrow) to, in this case, a string slice. So `load_from_file` borrows (a reference to) the string slice from it's caller.
 
 We use the `todo`-macro, that end execution and prints the given message. Running this gives:
 ```bash
@@ -235,8 +235,54 @@ Comments:
 1. We import the type `Value` from `serde_json`.
 2. We add the return type `Value` to `load_from_file`.
 3. We import the type `File` from `std::fs`.
-4. We try to open the path, and panics if anything goes wrong.
-5. We parse the json file to the type `Value` and panics if anything goes wrong.
+4. We try to open the path, and panics if anything goes wrong. See below.
+5. We parse the json file to the type `Value` and panics if anything goes wrong. The last line of a function is an implicit return (if it doesn't have a `;` at the end). We could write `return serde_json::from_reader(file).expect("successfully parsed JSON");` instead, but that is considered un-idiomatic Rust (but use for early returns).
+
+> ![NOTE]
+> Rust has no runtime exceptions, but instead uses a specific enum [`Result`](https://doc.rust-lang.org/std/result/enum.Result.html) to signal if something worked or failed. `Result` is defined as
+> ```rust
+> pub enum Result<T, E> {
+>    Ok(T),
+>    Err(E)
+> }
+> ```
+> That is a generic enum where the first generic parameter `T` is the success type and the second `E` is the error type. Enum members are usually used by specifing them with the enum name, as in `Result::Ok`, but as that would be a bit verbose, both *variants* of are automatically imported.
+>
+> So how can we use a `Result`? Here come some examples
+> ```rust
+> let ok: Result<i32, &str> = Ok(42); // An Ok of an integer
+> let err: Result<i32, &str> = Err("wrong answer"); // An Err of a string slice
+> ```
+> But how do you use a `Result`? You are forced to handle the possibly error before you can use a value.
+> ```rust
+> let val = ok.unwrap(); // Will take the value inside the result if it is Ok, otherwise panic.
+> let msg = err.unwrap(); // Will panic with the message 'called `Result::unwrap()` on an `Err` value: "wrong answer"'
+> // A more informative way to panic is use `expect`
+> let val = ok.expect("should be an integer"); // Will take the value
+> let val = err.expect("should be an integer"); // Will panic with the message 'should be an integer: "wrong answer"'
+> // We can `match` on the enum variants
+> let val = match ok {
+>    Ok(val) => val,
+>    Err(err) => panic!("should be an integer: '{}'", err),
+> }; // Will take the value
+> let val = match err {
+>    Ok(val) => val,
+>    Err(err) => panic!("should be an integer: '{}'", err),
+> }; // Will panic with the message 'should be an integer: 'wrong answer''
+> let sum = ok + 1; // This will not compile: 'cannot add `{integer}` to `Result<i32, &str>`'
+> let sum = ok.unwrap() + 1;
+> assert_eq!(sum, 43); // This tests that sum == 43 and panics otherwise
+> // We can also handle an err with `unwrap_or`
+> assert_eq!(ok.unwrap_or(24), 42); // no difference for the Ok value
+> assert_eq!(err.unwrap_or(24), 24); // Since err is an Err, use the value from unwrap_or
+> // Another alternative is to only work on the ok value, but keep the err if present
+> let sum_ok = ok.map(|v| v + 1); // map calls the given function with the value, if it is an Ok.
+> assert_eq!(sum_ok, Ok(43));
+> let sum_err = err.map(|v| v + 1); // our function will not be called
+> assert_eq!(sum_err, Err("wrong answer"));
+> ```
+> The last alternative is inspired from functional languages like `Haskell` and is sometimes called `railway programming`.
+> Try it out at [Rust Playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=98532489e46c74247a6cdaa2502d7dbe)
 
 Great, let's run it!
 ```bash
@@ -440,6 +486,12 @@ error: could not compile `read-json-in-rust` (bin "read-json-in-rust") due to pr
 ```
 
 So the next problem is that `data_source` is not an `Iterator`, that is implements the **_trait_** `Iterator`.
+
+> ![NOTE]
+> From the [Rust Book](https://doc.rust-lang.org/book/ch10-02-traits.html) about _**Traits**_:
+>> A *trait* defines functionality a particular type has and can share with other types. We can use traits to define shared behavior in an abstract way. We can use *trait bounds* to specify that a generic type can be any type that has certain behavior.
+>
+> Traits is similar to *interfaces* (or *abstract classes*) in other languages.
 
 So what is the `Value` we are using? If look at the [docs](https://docs.rs/serde_json/latest/serde_json/enum.Value.html) we see that `Value` is a `enum` of valid json types:
 ```rust
@@ -782,6 +834,10 @@ We have ported a simple Python program to Rust and seen a speedup by 2.5 to 4.4 
 - We read the documents as JSON value, we can also validate the data while deserializing.
 - We should handle errors better (and report them to the user).
 
+## References
+
+- [Rust Book](https://doc.rust-lang.org/book/title-page.html) the official guide to Rust.
+- [Rust Playground](https://play.rust-lang.org) try out some rust code in your browser.
 
 
 
