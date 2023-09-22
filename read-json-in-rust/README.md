@@ -46,7 +46,8 @@ def main():
 
 def load_from_file(path: str) -> typing.Any:
     with open(path) as file:
-        return json.load(file)
+        source = file.read()
+        return json.load(source)
 
 def dump_to_file(value: list[typing.Any], path: str):
     with open(path, mode="w") as file:
@@ -790,6 +791,96 @@ How is the memory usage changed?
 
 ![Memory usage of rust program read all content to String](./rust_release_string_memory_usage.png)
 
+#### Can we use the same technic when writing to a file?
+
+```diff
+fn dump_to_file(value: &Value, path: &str) {
+-    let writer = BufWriter::new(File::create(path).expect("failed to create file"));
+-    serde_json::to_writer(writer, value).expect("failed to serialize json")
++    let buffer = serde_json::to_string(value).expect("failed to serialize json");
++    let mut file = File::create(path).expect("failed to create file");
++    file.write_all(buffer.as_bytes()).expect("write to succeed");
+
+}
+```
+
+First, running this change with our BufReader-version:
+```bash
+> cargo run --release
+    Finished release [optimized] target(s) in 0.01s
+     Running `target/release/read-json-in-rust`
+Elapsed time 628.662968ms
+```
+
+Yes, some improvement, but not as big as reading everything.
+
+And then running it with our version to reads the whole file:
+```bash
+> cargo run --release
+   Compiling read-json-in-rust v0.1.0 (.../dev-tutorials/read-json-in-rust)
+    Finished release [optimized] target(s) in 0.48s
+     Running `target/release/read-json-in-rust`
+Elapsed time 363.911526ms
+```
+
+And we can se that we keep the slight improvement, but the big difference is made by read the whole file.
+
+And that slight improvement is followed by a slight increase in the memory usage.
+
+![Memory usage when reading and writing to strings](./rust_release_more_string_memory_usage.png)
+
+#### Can we use the same technic in Python?
+
+Glad you asked, let's try it.
+
+```diff
+def load_from_file(path: str) -> typing.Any:
+    with open(path) as file:
+-        return json.load(file)
++        source = file.read()
++        return json.loads(source)
+```
+
+And running it gives ...
+```bash
+> python read_json_in_python.py
+Elapsed time: 1.5982872919994406 s
+```
+
+a slight improvement, and how does the memory usage change?
+```bash
+> mprof run python read_json_in_python.py
+mprof: Sampling memory every 0.1s
+running new process
+Elapsed time: 1.6285033419990214 s
+```
+
+![Memory usage in Python read whole file](./python_string_memory_usage.png)
+
+Interesting to see that the maximum memory usage decreases when we read the whole file to memory.
+
+And if we dump the JSON to a string first and then writes the string to a file.
+
+```diff
+def dump_to_file(value: list[typing.Any], path: str):
+    with open(path, mode="w") as file:
+-        json.dump(value, file)
++        buffer = json.dumps(value)
++        file.write(buffer)
+```
+
+Running it:
+```bash
+> python read_json_in_python.py
+Elapsed time: 1.0124508890003199 s
+```
+
+Wow, so there we found a quite big improvement!
+
+And again, let's look at the memory usage:
+![Memory usage in Python when reading and writing to strings](./python_more_string_memory_usage.png)
+
+And the memory usage is less than our initial version.
 
 ### Deserialize to Vec directly
 
@@ -826,13 +917,16 @@ No, not for the speed. So you can choose what fits your program best.
 
 ## Conclusion
 
-We have ported a simple Python program to Rust and seen a speedup by 2.5 to 4.4 times.
+We have ported a simple Python program to Rust and seen a speedup by 2.5 to 4.4 times at the expense of using a bit more memory.
+
+In Python we saw a 1.7 times improvement when we first read the file to str and then parse the JSON and when writing, first dumping to string and then writes that string to file. And the interesting thing was that we also used less memory this way.
 
 ## Next steps
 
 - We read the whole find to memory, for large files it is needed to only read a document at a time and then write the updated to a the file.
 - We read the documents as JSON value, we can also validate the data while deserializing.
 - We should handle errors better (and report them to the user).
+
 
 ## References
 

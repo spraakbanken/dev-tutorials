@@ -2,6 +2,7 @@ use std::fs::File;
 use std::io::BufWriter;
 
 use std::io::Read;
+use std::io::Write;
 use std::time::Instant;
 
 use serde_json::Value;
@@ -33,6 +34,7 @@ fn load_from_file(path: &str) -> Vec<Value> {
 }
 
 fn dump_to_file(value: &[Value], path: &str) {
-    let writer = BufWriter::new(File::create(path).expect("failed to create file"));
-    serde_json::to_writer(writer, value).expect("failed to serialize json")
+    let buffer = serde_json::to_string(value).expect("failed to serialize json");
+    let mut file = File::create(path).expect("failed to create file");
+    file.write_all(buffer.as_bytes()).expect("write to succeed");
 }

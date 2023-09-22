@@ -23,11 +23,16 @@ def main():
 
 def load_from_file(path: str) -> typing.Any:
     with open(path) as file:
-        return json.load(file)
+        buffer = file.read()
+        return json.loads(buffer)
+        # return json.load(file)
 
 def dump_to_file(value: list[typing.Any], path: str):
     with open(path, mode="w") as file:
-        json.dump(value, file)
+        buffer = json.dumps(value)
+        file.write(buffer)
+        # json.dump(value, file)
+
 
 
 if __name__ == "__main__":
