@@ -238,7 +238,7 @@ Comments:
 4. We try to open the path, and panics if anything goes wrong. See below.
 5. We parse the json file to the type `Value` and panics if anything goes wrong. The last line of a function is an implicit return (if it doesn't have a `;` at the end). We could write `return serde_json::from_reader(file).expect("successfully parsed JSON");` instead, but that is considered un-idiomatic Rust (but use for early returns).
 
-> ![NOTE]
+> [!NOTE]
 > Rust has no runtime exceptions, but instead uses a specific enum [`Result`](https://doc.rust-lang.org/std/result/enum.Result.html) to signal if something worked or failed. `Result` is defined as
 > ```rust
 > pub enum Result<T, E> {
@@ -487,7 +487,7 @@ error: could not compile `read-json-in-rust` (bin "read-json-in-rust") due to pr
 
 So the next problem is that `data_source` is not an `Iterator`, that is implements the **_trait_** `Iterator`.
 
-> ![NOTE]
+> [!NOTE]
 > From the [Rust Book](https://doc.rust-lang.org/book/ch10-02-traits.html) about _**Traits**_:
 >> A *trait* defines functionality a particular type has and can share with other types. We can use traits to define shared behavior in an abstract way. We can use *trait bounds* to specify that a generic type can be any type that has certain behavior.
 >
