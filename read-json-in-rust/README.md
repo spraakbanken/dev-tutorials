@@ -379,7 +379,7 @@ After a successful `cargo run` we can look at our files:
 
 Ok, we created the file `skbl2_rust.json`, but it is smaller than `skbl2_python.json`, why is that?
 
-Inspections gives that `skbl2_python.json` is written with ascii and `skbl2_rust.json` uses utf-8.
+Inspections gives that `skbl2_python.json` is written with ascii (default in Python's `json` library) and `skbl2_rust.json` uses utf-8.
 
 ## Update the data
 
