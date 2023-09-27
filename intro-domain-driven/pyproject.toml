@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "resources"
+version = "0.1.0"
+description = ""
+authors = ["Kristoffer Andersson <kristoffer.andersson@gu.se>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "resources"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^1.10.6"
+black = "^23.1.0"
+pytest-cov = "^4.0.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.2"
+mypy = "^1.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+plugins = "pydantic.mypy"
