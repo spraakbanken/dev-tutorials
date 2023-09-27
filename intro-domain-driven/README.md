@@ -466,7 +466,7 @@ class ListResources(abc.ABC):
         ...
 ```
 
-We create a `dataclass` named `ResourceDto` (where `DTO` stands for `D`ata `T`ransfer `O`bject) to show that this query only is interested in this fields.
+We create a `dataclass` named `ResourceDto` (where `DTO` stands for `D`ata `T`ransfer `O`bject) to show that this query only is interested in these fields.
 
 And implement it for our Json file:
 
