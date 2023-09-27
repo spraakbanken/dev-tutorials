@@ -13,11 +13,13 @@ class Resource:
         *,
         id: UUID,
         name: str,
-        type: ResourceType,
+        type_: ResourceType | str,
+        comment: str | None = None,
     ) -> None:
         self._id = id
         self._name = name
-        self._type = type
+        self._type = ResourceType(type_) if isinstance(type_, str) else type_
+        self._comment = comment
 
     @property
     def id(self) -> UUID:
@@ -26,6 +28,10 @@ class Resource:
     @property
     def name(self) -> str:
         return self._name
+
+    @property
+    def comment(self) -> str | None:
+        return self._comment
 
     @property
     def type(self) -> ResourceType:

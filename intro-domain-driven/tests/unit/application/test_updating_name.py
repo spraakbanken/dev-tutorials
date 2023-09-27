@@ -24,7 +24,7 @@ def resource_id() -> UUID:
 def repo_with_resource(
     repo: ResourceRepository, resource_id: UUID
 ) -> ResourceRepository:
-    repo.save(Resource(id=resource_id, name="RANDOM", type=ResourceType.Lexicon))
+    repo.save(Resource(id=resource_id, name="RANDOM", type_=ResourceType.Lexicon))
     return repo
 
 

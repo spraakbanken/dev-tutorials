@@ -18,7 +18,10 @@ class JsonFileResourceRepository(ResourceRepository):
         for id, data in json.loads(self._path.read_text()).items():
             uuid = UUID(id)
             resource = Resource(
-                id=uuid, name=data["name"], type=ResourceType(data["type"])
+                id=uuid,
+                name=data["name"],
+                type_=ResourceType(data["type"]),
+                comment=data.get("comment"),
             )
             self._resources[uuid] = resource
 
@@ -27,10 +30,15 @@ class JsonFileResourceRepository(ResourceRepository):
 
     def save(self, resource: Resource) -> None:
         self._resources[resource.id] = copy.deepcopy(resource)
+        self.write_to_path()
 
     def write_to_path(self, path: Optional[Path] = None):
         to_disk = {
-            str(res.id): {"name": res.name, "type": str(res.type.value)}
+            str(res.id): {
+                "name": res.name,
+                "type": str(res.type.value),
+                "comment": res.comment,
+            }
             for res in self._resources.values()
         }
         if path:
