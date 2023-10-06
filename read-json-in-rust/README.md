@@ -68,7 +68,7 @@ Memory usage:
 
 ## Rewrite that in Rust
 
-We begin with that timings,
+So our goal is to rewrite the python program above in Rust.
 
 ### Setting up a cargo project
 
@@ -114,6 +114,17 @@ fn main() {
 All variable must be declared with `let`.
 The notation `"{:?}"` tells rust to use the `Debug` formatter for `Instant`, that is implemented for the most types, but for many types the standard `Display` formatter isn't not implemented (so is the case for `Instant`).
 
+So what happens when we run this:
+```bash
+> cargo run
+   Compiling read-json-in-rust v0.1.0 (.../read-json-in-rust)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.47s
+     Running `target/debug/read-json-in-rust`
+Elapsed time 86ns
+```
+
+One thing to note is that the `Instant` handles the unit of the measured time for us, in Python we had to explicitly print `s` to get the correct unit (and in my case look up if the method returns seconds or milliseconds).
+
 ### function load_from_file
 
 So let's add the function `load_from_file`.
@@ -124,7 +135,8 @@ fn main() {
     let start = Instant::now();
 
     let data_source = load_from_file("data/skbl.json");
-    ...
+
+    println!("Elapsed time {:?}", start.elapsed());
 }
 
 fn load_from_file(path: &str) {

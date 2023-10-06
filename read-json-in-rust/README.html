@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>README.md</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+
+    <style>
+      /* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+      /*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+      body {
+        font-family: var(
+          --vscode-markdown-font-family,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe WPC",
+          "Segoe UI",
+          "Ubuntu",
+          "Droid Sans",
+          sans-serif
+        );
+        font-size: var(--vscode-markdown-font-size, 14px);
+        padding: 0 26px;
+        line-height: var(--vscode-markdown-line-height, 22px);
+        word-wrap: break-word;
+      }
+
+      #code-csp-warning {
+        position: fixed;
+        top: 0;
+        right: 0;
+        color: white;
+        margin: 16px;
+        text-align: center;
+        font-size: 12px;
+        font-family: sans-serif;
+        background-color: #444444;
+        cursor: pointer;
+        padding: 6px;
+        box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
+      }
+
+      #code-csp-warning:hover {
+        text-decoration: none;
+        background-color: #007acc;
+        box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
+      }
+
+      body.scrollBeyondLastLine {
+        margin-bottom: calc(100vh - 22px);
+      }
+
+      body.showEditorSelection .code-line {
+        position: relative;
+      }
+
+      body.showEditorSelection .code-active-line:before,
+      body.showEditorSelection .code-line:hover:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        left: -12px;
+        height: 100%;
+      }
+
+      body.showEditorSelection li.code-active-line:before,
+      body.showEditorSelection li.code-line:hover:before {
+        left: -30px;
+      }
+
+      .vscode-light.showEditorSelection .code-active-line:before {
+        border-left: 3px solid rgba(0, 0, 0, 0.15);
+      }
+
+      .vscode-light.showEditorSelection .code-line:hover:before {
+        border-left: 3px solid rgba(0, 0, 0, 0.4);
+      }
+
+      .vscode-light.showEditorSelection .code-line .code-line:hover:before {
+        border-left: none;
+      }
+
+      .vscode-dark.showEditorSelection .code-active-line:before {
+        border-left: 3px solid rgba(255, 255, 255, 0.4);
+      }
+
+      .vscode-dark.showEditorSelection .code-line:hover:before {
+        border-left: 3px solid rgba(255, 255, 255, 0.6);
+      }
+
+      .vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+        border-left: none;
+      }
+
+      .vscode-high-contrast.showEditorSelection .code-active-line:before {
+        border-left: 3px solid rgba(255, 160, 0, 0.7);
+      }
+
+      .vscode-high-contrast.showEditorSelection .code-line:hover:before {
+        border-left: 3px solid rgba(255, 160, 0, 1);
+      }
+
+      .vscode-high-contrast.showEditorSelection
+        .code-line
+        .code-line:hover:before {
+        border-left: none;
+      }
+
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      a:focus,
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: 1px solid -webkit-focus-ring-color;
+        outline-offset: -1px;
+      }
+
+      hr {
+        border: 0;
+        height: 2px;
+        border-bottom: 2px solid;
+      }
+
+      h1 {
+        padding-bottom: 0.3em;
+        line-height: 1.2;
+        border-bottom-width: 1px;
+        border-bottom-style: solid;
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-weight: normal;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+
+      table > thead > tr > th {
+        text-align: left;
+        border-bottom: 1px solid;
+      }
+
+      table > thead > tr > th,
+      table > thead > tr > td,
+      table > tbody > tr > th,
+      table > tbody > tr > td {
+        padding: 5px 10px;
+      }
+
+      table > tbody > tr + tr > td {
+        border-top: 1px solid;
+      }
+
+      blockquote {
+        margin: 0 7px 0 5px;
+        padding: 0 16px 0 10px;
+        border-left-width: 5px;
+        border-left-style: solid;
+      }
+
+      code {
+        font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New",
+          monospace, "Droid Sans Fallback";
+        font-size: 1em;
+        line-height: 1.357em;
+      }
+
+      body.wordWrap pre {
+        white-space: pre-wrap;
+      }
+
+      pre:not(.hljs),
+      pre.hljs code > div {
+        padding: 16px;
+        border-radius: 3px;
+        overflow: auto;
+      }
+
+      pre code {
+        color: var(--vscode-editor-foreground);
+        tab-size: 4;
+      }
+
+      /** Theming */
+
+      .vscode-light pre {
+        background-color: rgba(220, 220, 220, 0.4);
+      }
+
+      .vscode-dark pre {
+        background-color: rgba(10, 10, 10, 0.4);
+      }
+
+      .vscode-high-contrast pre {
+        background-color: rgb(0, 0, 0);
+      }
+
+      .vscode-high-contrast h1 {
+        border-color: rgb(0, 0, 0);
+      }
+
+      .vscode-light table > thead > tr > th {
+        border-color: rgba(0, 0, 0, 0.69);
+      }
+
+      .vscode-dark table > thead > tr > th {
+        border-color: rgba(255, 255, 255, 0.69);
+      }
+
+      .vscode-light h1,
+      .vscode-light hr,
+      .vscode-light table > tbody > tr + tr > td {
+        border-color: rgba(0, 0, 0, 0.18);
+      }
+
+      .vscode-dark h1,
+      .vscode-dark hr,
+      .vscode-dark table > tbody > tr + tr > td {
+        border-color: rgba(255, 255, 255, 0.18);
+      }
+    </style>
+
+    <style>
+      /* Tomorrow Theme */
+      /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+      /* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+      /* Tomorrow Comment */
+      .hljs-comment,
+      .hljs-quote {
+        color: #8e908c;
+      }
+
+      /* Tomorrow Red */
+      .hljs-variable,
+      .hljs-template-variable,
+      .hljs-tag,
+      .hljs-name,
+      .hljs-selector-id,
+      .hljs-selector-class,
+      .hljs-regexp,
+      .hljs-deletion {
+        color: #c82829;
+      }
+
+      /* Tomorrow Orange */
+      .hljs-number,
+      .hljs-built_in,
+      .hljs-builtin-name,
+      .hljs-literal,
+      .hljs-type,
+      .hljs-params,
+      .hljs-meta,
+      .hljs-link {
+        color: #f5871f;
+      }
+
+      /* Tomorrow Yellow */
+      .hljs-attribute {
+        color: #eab700;
+      }
+
+      /* Tomorrow Green */
+      .hljs-string,
+      .hljs-symbol,
+      .hljs-bullet,
+      .hljs-addition {
+        color: #718c00;
+      }
+
+      /* Tomorrow Blue */
+      .hljs-title,
+      .hljs-section {
+        color: #4271ae;
+      }
+
+      /* Tomorrow Purple */
+      .hljs-keyword,
+      .hljs-selector-tag {
+        color: #8959a8;
+      }
+
+      .hljs {
+        display: block;
+        overflow-x: auto;
+        color: #4d4d4c;
+        padding: 0.5em;
+      }
+
+      .hljs-emphasis {
+        font-style: italic;
+      }
+
+      .hljs-strong {
+        font-weight: bold;
+      }
+    </style>
+
+    <style>
+      /*
+ * Markdown PDF CSS
+ */
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI",
+          "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+        padding: 0 12px;
+      }
+
+      pre {
+        background-color: #f8f8f8;
+        border: 1px solid #cccccc;
+        border-radius: 3px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+      }
+
+      pre:not(.hljs) {
+        padding: 23px;
+        line-height: 19px;
+      }
+
+      blockquote {
+        background: rgba(127, 127, 127, 0.1);
+        border-color: rgba(0, 122, 204, 0.5);
+      }
+
+      .emoji {
+        height: 1.4em;
+      }
+
+      code {
+        font-size: 14px;
+        line-height: 19px;
+      }
+
+      /* for inline code */
+      :not(pre):not(.hljs) > code {
+        color: #c9ae75;
+        /* Change the old color so it seems less like an error */
+        font-size: inherit;
+      }
+
+      /* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+      .page {
+        page-break-after: always;
+      }
+    </style>
+
+    <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+  </head>
+
+  <body>
+    <script>
+      mermaid.initialize({
+        startOnLoad: true,
+        theme:
+          document.body.classList.contains("vscode-dark") ||
+          document.body.classList.contains("vscode-high-contrast")
+            ? "dark"
+            : "default",
+      });
+    </script>
+    <h1 id="read-json-in-rust">Read JSON in Rust</h1>
+    <blockquote>
+      <p>[!NOTE] Updated to use published data instead.</p>
+    </blockquote>
+    <p>
+      <a href="https://www.rust-lang.org/">Rust</a> is a system-level
+      programming language that is compiled ahead of time (like Java, Go, C, C++
+      ,...).
+    </p>
+    <p>
+      In this tutorial we are going to read JSON, update the data and write to a
+      new file.
+    </p>
+    <p>
+      You can follow along at your own computer or at
+      <a href="https://replit.com">replit.com</a>
+    </p>
+    <h2 id="download-data">Download data</h2>
+    <p>
+      To run the examples, you need some data to work on, the
+      <a
+        href="https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/Makefile"
+        >Makefile</a
+      >
+      includes recipes to download skbl.json from https://spraakbanken.gu.se and
+      extract the array <code>entries</code> using
+      <a href="https://jqlang.github.io/jq/">jq</a>,
+      <code>make download-data</code>.
+    </p>
+    <p>
+      The dataset includes 2059 entries and weights 39 Mb in compacted form.
+    </p>
+    <h1 id="python-example">Python example</h1>
+    <p>
+      We begin by looking at an example from karp-backend-5 where we read and
+      update an JSON file.
+    </p>
+    <pre class="hljs"><code><div><span class="hljs-keyword">import</span> json
+<span class="hljs-keyword">import</span> time
+<span class="hljs-keyword">import</span> typing
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>:</span>
+    start = time.perf_counter()
+
+    data_source = load_from_file(<span class="hljs-string">"data/skbl.json"</span>)
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">doc_update</span><span class="hljs-params">(doc)</span>:</span>
+        doc[<span class="hljs-string">"lexiconName"</span>] = <span class="hljs-string">"skbl2"</span>
+        doc[<span class="hljs-string">"lexiconOrder"</span>] = <span class="hljs-number">48</span>
+        <span class="hljs-keyword">return</span> doc
+
+    <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source:
+        doc_update(doc)
+
+    dump_to_file(data_source, <span class="hljs-string">"data/skbl2_python.json"</span>)
+
+    elapsed = time.perf_counter() - start
+    print(<span class="hljs-string">f"Elapsed time: <span class="hljs-subst">{elapsed}</span> s"</span>)
+
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_from_file</span><span class="hljs-params">(path: str)</span> -&gt; typing.Any:</span>
+    <span class="hljs-keyword">with</span> open(path) <span class="hljs-keyword">as</span> file:
+        source = file.read()
+        <span class="hljs-keyword">return</span> json.load(source)
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">dump_to_file</span><span class="hljs-params">(value: list[typing.Any], path: str)</span>:</span>
+    <span class="hljs-keyword">with</span> open(path, mode=<span class="hljs-string">"w"</span>) <span class="hljs-keyword">as</span> file:
+        json.dump(value, file)
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    main()
+</div></code></pre>
+    <p>When running it we get this:</p>
+    <pre class="hljs"><code><div>&gt; python read_json_in_rust.py
+Elapsed time: 1.792407828004798 s
+</div></code></pre>
+    <p>
+      Memory usage:
+      <img
+        src="https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/python_memory_usage.png"
+        alt="Memory usage of python program"
+      />
+    </p>
+    <h1 id="rewrite-that-in-rust">Rewrite that in Rust</h1>
+    <p>So our goal is to rewrite the python program above in Rust.</p>
+    <h2 id="setting-up-a-cargo-project">Setting up a cargo project</h2>
+    <p>
+      <code>cargo</code> is Rust's package manager, we can create a project:
+    </p>
+    <pre
+      class="hljs"
+    ><code><div>&gt; cargo new <span class="hljs-built_in">read</span>-json-in-rust
+    Created binary (application) `<span class="hljs-built_in">read</span>-json-in-rust` package
+</div></code></pre>
+    <p>If we <code>cd</code> into the directory we can run our application:</p>
+    <pre
+      class="hljs"
+    ><code><div>&gt; <span class="hljs-built_in">cd</span> <span class="hljs-built_in">read</span>-json-in-rust
+&gt; cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/<span class="hljs-built_in">read</span>-json-in-rust)
+    Finished dev [unoptimized + debuginfo] target(s) <span class="hljs-keyword">in</span> 0.85s
+     Running `target/debug/<span class="hljs-built_in">read</span>-json-in-rust`
+Hello, world!
+</div></code></pre>
+    <p>Working correctly, and this is the code:</p>
+    <pre
+      class="hljs"
+    ><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"Hello, world!"</span>);
+}
+</div></code></pre>
+    <p>
+      We have a function (<code>fn</code>) <code>main</code> that uses a macro
+      (invoked with <code>!</code> after) to print
+      <code>Hello, world!</code> with new-line to <code>stdout</code>. The macro
+      is because rust functions can't handle variadic functions, but rust macros
+      can.
+    </p>
+    <h2 id="add-timings">Add timings</h2>
+    <pre class="hljs"><code><div>
+<span class="hljs-keyword">use</span> std::time::Instant;
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> start = Instant::now();
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"Elapsed time {:?}"</span>, start.elapsed());
+}
+</div></code></pre>
+    <p>
+      All variable must be declared with <code>let</code>. The notation
+      <code>&quot;{:?}&quot;</code> tells rust to use the
+      <code>Debug</code> formatter for <code>Instant</code>, that is implemented
+      for the most types, but for many types the standard
+      <code>Display</code> formatter isn't not implemented (so is the case for
+      <code>Instant</code>).
+    </p>
+    <h2 id="function-loadfromfile">function load_from_file</h2>
+    <p>
+      So let's add the function <code>load_from_file</code>. Let us begin to
+      sketch a solution.
+    </p>
+    <pre
+      class="hljs"
+    ><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> start = Instant::now();
+
+    <span class="hljs-keyword">let</span> data_source = load_from_file(<span class="hljs-string">"data/skbl.json"</span>);
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"Elapsed time {:?}"</span>, start.elapsed());
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">load_from_file</span></span>(path: &amp;<span class="hljs-built_in">str</span>) {
+    todo!(<span class="hljs-string">"load data from {}"</span>, path)
+}
+</div></code></pre>
+    <p>
+      <strong>Notes:</strong> <code>str</code> is the string slice type in rust,
+      and <code>&amp;</code> is a reference (borrow) to, in this case, a string
+      slice. So <code>load_from_file</code> borrows (a reference to) the string
+      slice from it's caller.
+    </p>
+    <p>
+      We use the <code>todo</code>-macro, that end execution and prints the
+      given message. Running this gives:
+    </p>
+    <pre class="hljs"><code><div>&gt; cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/<span class="hljs-built_in">read</span>-json-in-rust)
+warning: unused variable: `data_source`
+  --&gt; src/main.rs:11:9
+   |
+11 |     <span class="hljs-built_in">let</span> data_source = load_from_file(<span class="hljs-string">"data/skbl.json"</span>);
+   |         ^^^^^^^^^^^ <span class="hljs-built_in">help</span>: <span class="hljs-keyword">if</span> this is intentional, prefix it with an underscore: `_data_source`
+   |
+   = note: `<span class="hljs-comment">#[warn(unused_variables)]` on by default</span>
+
+warning: `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) generated 2 warnings (run `cargo fix --bin <span class="hljs-string">"read-json-in-rust"</span>` to apply 1 suggestion)
+    Finished dev [unoptimized + debuginfo] target(s) <span class="hljs-keyword">in</span> 0.35s
+     Running `target/debug/<span class="hljs-built_in">read</span>-json-in-rust`
+thread <span class="hljs-string">'main'</span> panicked at <span class="hljs-string">'not yet implemented: load data from data/skbl.json'</span>, src/main.rs:18:5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+</div></code></pre>
+    <p>
+      We can see that the program panicked with the message
+      <code>not yet implemented: load data from data/skbl.json</code> and the
+      location in the source file <code>src/main.rs:18:5</code>. This allows us
+      to sketch the flow in the program.
+    </p>
+    <ul>
+      <li>
+        panics is one of rust's way of handling errors, abort the program if
+        something fails
+      </li>
+    </ul>
+    <p>
+      We can also see that the compiler warns us that the varialbe
+      <code>data_source</code> is unused.
+    </p>
+    <p>Let's start to implement the function!</p>
+    <h2 id="serde">Serde</h2>
+    <p>
+      In rust the de-facto standard for serialization and deserialization in
+      Rust is <a href="https://serde.rs">serde</a>, and especially the
+      <strong><em>crate</em></strong>
+      <a href="https://crates.io/crates/serde_json"><code>serde_json</code></a
+      >. Let's add it to our project:
+    </p>
+    <pre class="hljs"><code><div>&gt; cargo add serde_json
+    Updating crates.io index
+      Adding serde_json v1.0.96 to dependencies.
+             Features:
+             + std
+             - alloc
+             - arbitrary_precision
+             - float_roundtrip
+             - indexmap
+             - preserve_order
+             - raw_value
+             - unbounded_depth
+</div></code></pre>
+    <p>
+      Great, we added <code>serde_json</code> to our project. The
+      <code>cargo add</code> also lists the features that are available for this
+      crate, but we don't need to bother about that.
+    </p>
+    <p>Let's try to run it:</p>
+    <pre class="hljs"><code><div>&gt; cargo run
+    Updating crates.io index
+  Downloaded ryu v1.0.13
+  Downloaded serde v1.0.160
+  Downloaded serde_json v1.0.96
+  Downloaded itoa v1.0.6
+  Downloaded 4 crates (278.9 KB) <span class="hljs-keyword">in</span> 0.38s
+   Compiling serde v1.0.160
+   Compiling serde_json v1.0.96
+   Compiling ryu v1.0.13
+   Compiling itoa v1.0.6
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/<span class="hljs-built_in">read</span>-json-in-rust)
+warning: unused variable: `data_source`
+ --&gt; src/main.rs:2:9
+  |
+2 |     <span class="hljs-built_in">let</span> data_source = load_from_file(<span class="hljs-string">"data/skbl.json"</span>);
+  |         ^^^^^^^^^^^ <span class="hljs-built_in">help</span>: <span class="hljs-keyword">if</span> this is intentional, prefix it with an underscore: `_data_source`
+  |
+  = note: `<span class="hljs-comment">#[warn(unused_variables)]` on by default</span>
+
+warning: `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) generated 1 warning (run `cargo fix --bin <span class="hljs-string">"read-json-in-rust"</span>` to apply 1 suggestion)
+    Finished dev [unoptimized + debuginfo] target(s) <span class="hljs-keyword">in</span> 4.21s
+     Running `target/debug/<span class="hljs-built_in">read</span>-json-in-rust`
+thread <span class="hljs-string">'main'</span> panicked at <span class="hljs-string">'not yet implemented: load data from data/skbl.json'</span>, src/main.rs:6:5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+</div></code></pre>
+    <p>Ok, what happend?</p>
+    <ol>
+      <li>
+        <code>cargo</code> downloads the needed crates to compile our crate. For
+        us it means that <code>serde_json</code> and all dependencies for it is
+        downloaded.
+      </li>
+      <li>
+        <code>cargo</code> then compiles everything and then links everything
+        together.
+        <ul>
+          <li>
+            <code>cargo</code> emits a warning that we don't use the variable
+            <code>data_source</code> in main.
+          </li>
+          <li>These steps is also available as <code>cargo build</code>.</li>
+        </ul>
+      </li>
+      <li><code>cargo</code> runs our application</li>
+      <li>
+        our application panics with the message
+        <code>not yet implemented: load data from data/skbl.json</code>
+        <ul>
+          <li>
+            panics is one of rust's way of handling errors, abort the program if
+            something fails
+          </li>
+        </ul>
+      </li>
+    </ol>
+    <p>So let's read the JSON file:</p>
+    <pre
+      class="hljs"
+    ><code><div><span class="hljs-keyword">use</span> std::fs::File; <span class="hljs-comment">// (3)</span>
+<span class="hljs-keyword">use</span> std::time::Instant;
+
+<span class="hljs-keyword">use</span> serde_json::Value; <span class="hljs-comment">// (1)</span>
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">load_from_file</span></span>(path: &amp;<span class="hljs-built_in">str</span>) -&gt; Value { <span class="hljs-comment">// (2)</span>
+    <span class="hljs-keyword">let</span> file = File::open(path).expect(<span class="hljs-string">"a valid path"</span>); <span class="hljs-comment">// (4)</span>
+    serde_json::from_reader(file).expect(<span class="hljs-string">"successfully parsed JSON"</span>) <span class="hljs-comment">// (5)</span>
+}
+</div></code></pre>
+    <p>Comments:</p>
+    <ol>
+      <li>
+        We import the type <code>Value</code> from <code>serde_json</code>.
+      </li>
+      <li>
+        We add the return type <code>Value</code> to
+        <code>load_from_file</code>.
+      </li>
+      <li>We import the type <code>File</code> from <code>std::fs</code>.</li>
+      <li>
+        We try to open the path, and panics if anything goes wrong. See below.
+      </li>
+      <li>
+        We parse the json file to the type <code>Value</code> and panics if
+        anything goes wrong. The last line of a function is an implicit return
+        (if it doesn't have a <code>;</code> at the end). We could write
+        <code
+          >return serde_json::from_reader(file).expect(&quot;successfully parsed
+          JSON&quot;);</code
+        >
+        instead, but that is considered un-idiomatic Rust (but use for early
+        returns).
+      </li>
+    </ol>
+    <blockquote>
+      <p>
+        [!NOTE] Rust has no runtime exceptions, but instead uses a specific enum
+        <a href="https://doc.rust-lang.org/std/result/enum.Result.html"
+          ><code>Result</code></a
+        >
+        to signal if something worked or failed. <code>Result</code> is defined
+        as
+      </p>
+      <pre
+        class="hljs"
+      ><code><div><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Result</span></span>&lt;T, E&gt; {
+   <span class="hljs-literal">Ok</span>(T),
+   <span class="hljs-literal">Err</span>(E)
+}
+</div></code></pre>
+      <p>
+        That is a generic enum where the first generic parameter
+        <code>T</code> is the success type and the second <code>E</code> is the
+        error type. Enum members are usually used by specifing them with the
+        enum name, as in <code>Result::Ok</code>, but as that would be a bit
+        verbose, both <em>variants</em> of are automatically imported.
+      </p>
+      <p>So how can we use a <code>Result</code>? Here come some examples</p>
+      <pre
+        class="hljs"
+      ><code><div><span class="hljs-keyword">let</span> ok: <span class="hljs-built_in">Result</span>&lt;<span class="hljs-built_in">i32</span>, &amp;<span class="hljs-built_in">str</span>&gt; = <span class="hljs-literal">Ok</span>(<span class="hljs-number">42</span>); <span class="hljs-comment">// An Ok of an integer</span>
+<span class="hljs-keyword">let</span> err: <span class="hljs-built_in">Result</span>&lt;<span class="hljs-built_in">i32</span>, &amp;<span class="hljs-built_in">str</span>&gt; = <span class="hljs-literal">Err</span>(<span class="hljs-string">"wrong answer"</span>); <span class="hljs-comment">// An Err of a string slice</span>
+</div></code></pre>
+      <p>
+        But how do you use a <code>Result</code>? You are forced to handle the
+        possibly error before you can use a value.
+      </p>
+      <pre
+        class="hljs"
+      ><code><div><span class="hljs-keyword">let</span> val = ok.unwrap(); <span class="hljs-comment">// Will take the value inside the result if it is Ok, otherwise panic.</span>
+<span class="hljs-keyword">let</span> msg = err.unwrap(); <span class="hljs-comment">// Will panic with the message 'called `Result::unwrap()` on an `Err` value: "wrong answer"'</span>
+<span class="hljs-comment">// A more informative way to panic is use `expect`</span>
+<span class="hljs-keyword">let</span> val = ok.expect(<span class="hljs-string">"should be an integer"</span>); <span class="hljs-comment">// Will take the value</span>
+<span class="hljs-keyword">let</span> val = err.expect(<span class="hljs-string">"should be an integer"</span>); <span class="hljs-comment">// Will panic with the message 'should be an integer: "wrong answer"'</span>
+<span class="hljs-comment">// We can `match` on the enum variants</span>
+<span class="hljs-keyword">let</span> val = <span class="hljs-keyword">match</span> ok {
+   <span class="hljs-literal">Ok</span>(val) =&gt; val,
+   <span class="hljs-literal">Err</span>(err) =&gt; <span class="hljs-built_in">panic!</span>(<span class="hljs-string">"should be an integer: '{}'"</span>, err),
+}; <span class="hljs-comment">// Will take the value</span>
+<span class="hljs-keyword">let</span> val = <span class="hljs-keyword">match</span> err {
+   <span class="hljs-literal">Ok</span>(val) =&gt; val,
+   <span class="hljs-literal">Err</span>(err) =&gt; <span class="hljs-built_in">panic!</span>(<span class="hljs-string">"should be an integer: '{}'"</span>, err),
+}; <span class="hljs-comment">// Will panic with the message 'should be an integer: 'wrong answer''</span>
+<span class="hljs-keyword">let</span> sum = ok + <span class="hljs-number">1</span>; <span class="hljs-comment">// This will not compile: 'cannot add `{integer}` to `Result&lt;i32, &amp;str&gt;`'</span>
+<span class="hljs-keyword">let</span> sum = ok.unwrap() + <span class="hljs-number">1</span>;
+<span class="hljs-built_in">assert_eq!</span>(sum, <span class="hljs-number">43</span>); <span class="hljs-comment">// This tests that sum == 43 and panics otherwise</span>
+<span class="hljs-comment">// We can also handle an err with `unwrap_or`</span>
+<span class="hljs-built_in">assert_eq!</span>(ok.unwrap_or(<span class="hljs-number">24</span>), <span class="hljs-number">42</span>); <span class="hljs-comment">// no difference for the Ok value</span>
+<span class="hljs-built_in">assert_eq!</span>(err.unwrap_or(<span class="hljs-number">24</span>), <span class="hljs-number">24</span>); <span class="hljs-comment">// Since err is an Err, use the value from unwrap_or</span>
+<span class="hljs-comment">// Another alternative is to only work on the ok value, but keep the err if present</span>
+<span class="hljs-keyword">let</span> sum_ok = ok.map(|v| v + <span class="hljs-number">1</span>); <span class="hljs-comment">// map calls the given function with the value, if it is an Ok.</span>
+<span class="hljs-built_in">assert_eq!</span>(sum_ok, <span class="hljs-literal">Ok</span>(<span class="hljs-number">43</span>));
+<span class="hljs-keyword">let</span> sum_err = err.map(|v| v + <span class="hljs-number">1</span>); <span class="hljs-comment">// our function will not be called</span>
+<span class="hljs-built_in">assert_eq!</span>(sum_err, <span class="hljs-literal">Err</span>(<span class="hljs-string">"wrong answer"</span>));
+</div></code></pre>
+      <p>
+        The last alternative is inspired from functional languages like
+        <code>Haskell</code> and is sometimes called
+        <code>railway programming</code>. Try it out at
+        <a
+          href="https://play.rust-lang.org/?version=stable&amp;mode=debug&amp;edition=2021&amp;gist=98532489e46c74247a6cdaa2502d7dbe"
+          >Rust Playground</a
+        >
+      </p>
+    </blockquote>
+    <p>Great, let's run it!</p>
+    <pre class="hljs"><code><div>&gt; cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/<span class="hljs-built_in">read</span>-json-in-rust)
+warning: unused variable: `data_source`
+  --&gt; src/main.rs:11:9
+   |
+11 |     <span class="hljs-built_in">let</span> data_source = load_from_file(<span class="hljs-string">"data/skbl.json"</span>);
+   |         ^^^^^^^^^^^ <span class="hljs-built_in">help</span>: <span class="hljs-keyword">if</span> this is intentional, prefix it with an underscore: `_data_source`
+   |
+   = note: `<span class="hljs-comment">#[warn(unused_variables)]` on by default</span>
+
+warning: `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) generated 2 warnings (run `cargo fix --bin <span class="hljs-string">"read-json-in-rust"</span>` to apply 1 suggestion)
+    Finished dev [unoptimized + debuginfo] target(s) <span class="hljs-keyword">in</span> 0.45s
+     Running `target/debug/<span class="hljs-built_in">read</span>-json-in-rust`
+Elapsed time 37.309493395s
+</div></code></pre>
+    <p>Ouch, more than 37 seconds, something must be wrong.</p>
+    <p>
+      Yes, by looking in
+      <a href="https://docs.rs/serde_json/latest/serde_json/fn.from_reader.html"
+        >the <code>serde_json</code> docs for <code>from_reader</code></a
+      >
+      we can read:
+    </p>
+    <blockquote>
+      <p>
+        When reading from a source against which short reads are not efficient,
+        such as a File, you will want to apply your own buffering because
+        serde_json will not buffer the input. See std::io::BufReader.
+      </p>
+    </blockquote>
+    <p>Let's try that:</p>
+    <pre
+      class="hljs"
+    ><code><div><span class="hljs-keyword">use</span> std::fs::File;
+<span class="hljs-keyword">use</span> std::io::BufReader; <span class="hljs-comment">// (1)</span>
+<span class="hljs-keyword">use</span> std::time::Instant;
+
+<span class="hljs-keyword">use</span> serde_json::Value;
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">load_from_file</span></span>(path: &amp;<span class="hljs-built_in">str</span>) -&gt; Value {
+    <span class="hljs-keyword">let</span> file = File::open(path).expect(<span class="hljs-string">"a valid path"</span>);
+    <span class="hljs-keyword">let</span> reader = BufReader::new(file); <span class="hljs-comment">// (2)</span>
+    serde_json::from_reader(reader).expect(<span class="hljs-string">"successfully parsed JSON"</span>)
+}
+</div></code></pre>
+    <ol>
+      <li>We import <code>BufReader</code>.</li>
+      <li>
+        We create a <code>BufReader</code> wrapping the file. The
+        <code>BufReader</code> keeps an internal buffer, that it makes a large
+        read to and then makes small reads from that buffer. (And yes,
+        <code>Python</code> does that for us by default).
+      </li>
+    </ol>
+    <p>How long does this take?</p>
+    <pre class="hljs"><code><div>&gt; cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/<span class="hljs-built_in">read</span>-json-in-rust)
+warning: unused variable: `data_source`
+  --&gt; src/main.rs:11:9
+   |
+11 |     <span class="hljs-built_in">let</span> data_source = load_from_file(<span class="hljs-string">"data/skbl.json"</span>);
+   |         ^^^^^^^^^^^ <span class="hljs-built_in">help</span>: <span class="hljs-keyword">if</span> this is intentional, prefix it with an underscore: `_data_source`
+   |
+   = note: `<span class="hljs-comment">#[warn(unused_variables)]` on by default</span>
+
+warning: `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) generated 2 warnings (run `cargo fix --bin <span class="hljs-string">"read-json-in-rust"</span>` to apply 1 suggestion)
+    Finished dev [unoptimized + debuginfo] target(s) <span class="hljs-keyword">in</span> 0.69s
+     Running `target/debug/<span class="hljs-built_in">read</span>-json-in-rust`
+Elapsed time 3.713371222s
+</div></code></pre>
+    <p>
+      Ok, some improvment, from 37.3s to 3.71s, but still twice as slow as
+      <code>Python</code>. But let's not bother about that yet.
+    </p>
+    <h2 id="dump-json">Dump JSON</h2>
+    <p>
+      Next up is to write the json to a new file, we add these lines to our
+      main:
+    </p>
+    <pre
+      class="hljs"
+    ><code><div>    <span class="hljs-keyword">let</span> updated_data = data_source;
+    dump_to_file(&amp;updated_data, <span class="hljs-string">"data/skbl2_rust.json"</span>);
+</div></code></pre>
+    <p>And add this function:</p>
+    <pre
+      class="hljs"
+    ><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">dump_to_file</span></span>(value: &amp;Value, path: &amp;<span class="hljs-built_in">str</span>) {
+    <span class="hljs-keyword">let</span> writer = BufWriter::new(File::create(path).expect(<span class="hljs-string">"failed to create file"</span>));
+    serde_json::to_writer(writer, value).expect(<span class="hljs-string">"failed to serialize json"</span>)
+}
+</div></code></pre>
+    <ol>
+      <li>We take value and path by reference (borrows them).</li>
+      <li>
+        We create a file for writing with <code>File::create</code>, and panic
+        on errors.
+      </li>
+      <li>
+        That file is unbuffered, so we add a <code>BufWriter</code> around the
+        file to buffer the writes.
+      </li>
+      <li>We serialize the <code>value</code> with serde_json.</li>
+    </ol>
+    <p>After a successful <code>cargo run</code> we can look at our files:</p>
+    <pre class="hljs"><code><div>&gt; ls -l data
+.rw-r--r-- 39M kristoffer  2 maj 14:36  skbl.json
+.rw-r--r-- 42M kristoffer 20 sep 10:27  skbl2_python.json
+.rw-r--r-- 39M kristoffer  2 maj 15:14  skbl2_rust.json
+</div></code></pre>
+    <p>
+      Ok, we created the file <code>skbl2_rust.json</code>, but it is smaller
+      than <code>skbl2_python.json</code>, why is that?
+    </p>
+    <p>
+      Inspections gives that <code>skbl2_python.json</code> is written with
+      ascii (default in Python's <code>json</code> library) and
+      <code>skbl2_rust.json</code> uses utf-8.
+    </p>
+    <h2 id="update-the-data">Update the data</h2>
+    <p>
+      And of course we want to update the data also. How did we do it in python?
+    </p>
+    <pre
+      class="hljs"
+    ><code><div>    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">doc_update</span><span class="hljs-params">(doc)</span>:</span>
+        doc[<span class="hljs-string">"lexiconName"</span>] = <span class="hljs-string">"skbl2"</span>
+        doc[<span class="hljs-string">"lexiconOrder"</span>] = <span class="hljs-number">48</span>
+        <span class="hljs-keyword">return</span> doc
+
+    <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source:
+        doc_update(doc)
+
+</div></code></pre>
+    <p>
+      Seems simple, we update the documents in
+      <code>data_source</code> directly, let's try that in Rust.
+    </p>
+    <pre
+      class="hljs"
+    ><code><div>    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">doc_update</span></span>(doc: Value) {
+        doc[<span class="hljs-string">"lexiconName"</span>] = <span class="hljs-string">"skbl2"</span>;
+        doc[<span class="hljs-string">"lexiconOrder"</span>] = <span class="hljs-number">48</span>;
+    }
+
+    <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source {
+        doc_update(doc);
+    }
+</div></code></pre>
+    <p>So running this gives us:</p>
+    <pre class="hljs"><code><div>&gt; cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+error[E0277]: `Value` is not an iterator
+  --&gt; src/main.rs:18:16
+   |
+18 |     <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source {
+   |                ^^^^^^^^^^^ `Value` is not an iterator
+   |
+   = <span class="hljs-built_in">help</span>: the trait `Iterator` is not implemented <span class="hljs-keyword">for</span> `Value`
+   = note: required <span class="hljs-keyword">for</span> `Value` to implement `IntoIterator`
+
+error[E0308]: mismatched types
+  --&gt; src/main.rs:14:41
+   |
+14 |         doc[<span class="hljs-string">"lexiconName"</span>] = <span class="hljs-string">"skbl2"</span>;
+   |         -----------------------------   ^^^^^^^ expected `Value`, found `&amp;str`
+   |         |
+   |         expected due to the <span class="hljs-built_in">type</span> of this binding
+   |
+<span class="hljs-built_in">help</span>: call `Into::into` on this expression to convert `&amp;<span class="hljs-string">'static str` into `Value`
+   |
+14 |         doc["lexiconName"] = "skbl2".into();
+   |                                                +++++++
+
+error[E0308]: mismatched types
+  --&gt; src/main.rs:15:42
+   |
+15 |         doc["lexiconOrder"] = 48;
+   |         ------------------------------   ^^ expected `Value`, found integer
+   |         |
+   |         expected due to the type of this binding
+
+Some errors have detailed explanations: E0277, E0308.
+For more information about an error, try `rustc --explain E0277`.
+error: could not compile `read-json-in-rust` (bin "read-json-in-rust") due to 3 previous errors
+</span></div></code></pre>
+    <p>Ok, that didn't work, but the compiler gives us some hints.</p>
+    <p>
+      We begin with the errors <code>error[E0308]: mismatched types</code>, the
+      compiler suggests that we shall add <code>.into()</code> after
+      <code>&quot;skbl2&quot;</code> to convert
+      <code>&amp;'static str</code> into <code>Value</code>.
+    </p>
+    <blockquote>
+      <p>
+        [!NOTE] The type <code>&amp;'static str</code> is composed of the
+        reference operator (borrow) <code>&amp;</code>, a lifetime on that
+        reference <code>'static</code> and the string-slice type
+        <code>str</code>. And almost always the string-slice type is used
+        together as a reference, that is as <code>&amp;str</code>. The special
+        lifetime <code>'static</code> says that the string slice is valid for
+        the whole program (it is in fact stored in the executable).
+      </p>
+    </blockquote>
+    <p>So let's follow the help.</p>
+    <pre
+      class="hljs"
+    ><code><div>    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">doc_update</span></span>(doc: Value) {
+        doc[<span class="hljs-string">"lexiconName"</span>] = <span class="hljs-string">"skbl2"</span>.into();
+        doc[<span class="hljs-string">"lexiconOrder"</span>] = <span class="hljs-number">48</span>.into();
+    }
+
+    <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source {
+        doc_update(doc);
+    }
+</div></code></pre>
+    <p>That helped!</p>
+    <pre class="hljs"><code><div>cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (/home/kristoffer/projekt/sb/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+error[E0277]: `Value` is not an iterator
+  --&gt; src/main.rs:18:16
+   |
+18 |     <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source {
+   |                ^^^^^^^^^^^ `Value` is not an iterator
+   |
+   = <span class="hljs-built_in">help</span>: the trait `Iterator` is not implemented <span class="hljs-keyword">for</span> `Value`
+   = note: required <span class="hljs-keyword">for</span> `Value` to implement `IntoIterator`
+
+For more information about this error, try `rustc --explain E0277`.
+error: could not compile `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) due to previous error
+</div></code></pre>
+    <p>
+      So the next problem is that <code>data_source</code> is not an
+      <code>Iterator</code>, that is implements the
+      <strong><em>trait</em></strong> <code>Iterator</code>.
+    </p>
+    <blockquote>
+      <p>
+        [!NOTE] From the
+        <a href="https://doc.rust-lang.org/book/ch10-02-traits.html"
+          >Rust Book</a
+        >
+        about <em><strong>Traits</strong></em
+        >:
+      </p>
+      <blockquote>
+        <p>
+          A <em>trait</em> defines functionality a particular type has and can
+          share with other types. We can use traits to define shared behavior in
+          an abstract way. We can use <em>trait bounds</em> to specify that a
+          generic type can be any type that has certain behavior.
+        </p>
+      </blockquote>
+      <p>
+        Traits is similar to <em>interfaces</em> (or <em>abstract classes</em>)
+        in other languages.
+      </p>
+    </blockquote>
+    <p>
+      So what is the <code>Value</code> we are using? If look at the
+      <a href="https://docs.rs/serde_json/latest/serde_json/enum.Value.html"
+        >docs</a
+      >
+      we see that <code>Value</code> is a <code>enum</code> of valid json types:
+    </p>
+    <pre
+      class="hljs"
+    ><code><div><span class="hljs-keyword">pub</span> <span class="hljs-class"><span class="hljs-keyword">enum</span> <span class="hljs-title">Value</span></span> {
+    Null,
+    Bool(<span class="hljs-built_in">bool</span>),
+    Number(Number),
+    <span class="hljs-built_in">String</span>(<span class="hljs-built_in">String</span>),
+    Array(<span class="hljs-built_in">Vec</span>&lt;Value&gt;),
+    Object(Map&lt;<span class="hljs-built_in">String</span>, Value&gt;),
+}
+</div></code></pre>
+    <p>
+      Rust's <code>enum</code>s are quite powerful that let's us associate
+      different types with the different enumerations. We expect our data to be
+      stored as an <code>Array</code> so in the docs we find
+    </p>
+    <blockquote>
+      <p>
+        <code
+          >pub fn as_array(&amp;self) -&gt;
+          Option&lt;&amp;Vec&lt;Value&gt;&gt;</code
+        >
+      </p>
+      <p>
+        If the Value is an Array, returns the associated vector. Returns None
+        otherwise.
+      </p>
+    </blockquote>
+    <p>So adding that gives us:</p>
+    <pre
+      class="hljs"
+    ><code><div>    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">doc_update</span></span>(doc: Value) {
+        doc[<span class="hljs-string">"lexiconName"</span>] = <span class="hljs-string">"skbl2"</span>.into();
+        doc[<span class="hljs-string">"lexiconOrder"</span>] = <span class="hljs-number">48</span>.into();
+    }
+
+    <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source.as_array().expect(<span class="hljs-string">"an array"</span>) {
+        doc_update(doc);
+    }
+</div></code></pre>
+    <p>And running it</p>
+    <pre class="hljs"><code><div>&gt; cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+error[E0308]: mismatched types
+  --&gt; src/main.rs:19:20
+   |
+19 |         doc_update(doc);
+   |         ---------- ^^^ expected `Value`, found `&amp;Value`
+   |         |
+   |         arguments to this <span class="hljs-keyword">function</span> are incorrect
+   |
+note: <span class="hljs-keyword">function</span> defined here
+  --&gt; src/main.rs:13:8
+   |
+13 |     fn doc_update(doc: Value) {
+   |        ^^^^^^^^^^ ----------
+<span class="hljs-built_in">help</span>: consider using <span class="hljs-built_in">clone</span> here
+   |
+19 |         doc_update(doc.clone());
+   |                       ++++++++
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) due to previous error
+</div></code></pre>
+    <p>
+      So we get the error that <code>doc_update</code> expects
+      <code>Value</code> but we try to call it with <code>&amp;Value</code> (a
+      borrow). Here the suggestion doesn't work for us, we want a borrow to
+      update the document in place. So let's try to change
+      <code>doc_update</code> to take a borrow.
+    </p>
+    <pre
+      class="hljs"
+    ><code><div>    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">doc_update</span></span>(doc: &amp;Value) {
+        doc[<span class="hljs-string">"lexiconName"</span>] = <span class="hljs-string">"skbl2"</span>.into();
+        doc[<span class="hljs-string">"lexiconOrder"</span>] = <span class="hljs-number">48</span>.into();
+    }
+
+    <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source.as_array().expect(<span class="hljs-string">"an array"</span>) {
+        doc_update(doc);
+    }
+</div></code></pre>
+    <p>And running it:</p>
+    <pre class="hljs"><code><div>❯ cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+error[E0596]: cannot borrow `*doc` as mutable, as it is behind a `&amp;` reference
+  --&gt; src/main.rs:14:9
+   |
+14 |         doc[<span class="hljs-string">"lexiconName"</span>] = <span class="hljs-string">"skbl2"</span>.into();
+   |         ^^^ `doc` is a `&amp;` reference, so the data it refers to cannot be borrowed as mutable
+   |
+<span class="hljs-built_in">help</span>: consider changing this to be a mutable reference
+   |
+13 |     fn doc_update(doc: &amp;mut Value) {
+   |                         +++
+
+error[E0596]: cannot borrow `*doc` as mutable, as it is behind a `&amp;` reference
+  --&gt; src/main.rs:15:9
+   |
+15 |         doc[<span class="hljs-string">"lexiconOrder"</span>] = 48.into();
+   |         ^^^ `doc` is a `&amp;` reference, so the data it refers to cannot be borrowed as mutable
+   |
+<span class="hljs-built_in">help</span>: consider changing this to be a mutable reference
+   |
+13 |     fn doc_update(doc: &amp;mut Value) {
+   |                         +++
+
+For more information about this error, try `rustc --explain E0596`.
+error: could not compile `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) due to 2 previous errors
+</div></code></pre>
+    <p>
+      So now we aren't allowed to change doc through a
+      <code>&amp;Value</code> reference, but we need a
+      <code>&amp;mut Value</code>.
+    </p>
+    <blockquote>
+      <p>
+        [!NOTE] The rust compiler has an ownership system that tracks what part
+        of the code owns a value. A owner can gives either one (1) mutable
+        reference to a value or many readable references. This is a restriction
+        from the insight that many bugs comes from ...
+      </p>
+    </blockquote>
+    <p>So if <code>doc_update</code> takes a mutable reference</p>
+    <pre
+      class="hljs"
+    ><code><div>    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">doc_update</span></span>(doc: &amp;<span class="hljs-keyword">mut</span> Value) {
+        doc[<span class="hljs-string">"lexiconName"</span>] = <span class="hljs-string">"skbl2"</span>.into();
+        doc[<span class="hljs-string">"lexiconOrder"</span>] = <span class="hljs-number">48</span>.into();
+    }
+
+    <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source.as_array().expect(<span class="hljs-string">"an array"</span>) {
+        doc_update(doc);
+    }
+</div></code></pre>
+    <p>The compiler now complains that ...</p>
+    <pre class="hljs"><code><div>❯ cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (/home/kristoffer/projekt/sb/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+error[E0308]: mismatched types
+  --&gt; src/main.rs:19:20
+   |
+19 |         doc_update(doc);
+   |         ---------- ^^^ types differ <span class="hljs-keyword">in</span> mutability
+   |         |
+   |         arguments to this <span class="hljs-keyword">function</span> are incorrect
+   |
+   = note: expected mutable reference `&amp;mut Value`
+                      found reference `&amp;Value`
+note: <span class="hljs-keyword">function</span> defined here
+  --&gt; src/main.rs:13:8
+   |
+13 |     fn doc_update(doc: &amp;mut Value) {
+   |        ^^^^^^^^^^ ---------------
+
+For more information about this error, try `rustc --explain E0308`.
+error: could not compile `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) due to previous error
+</div></code></pre>
+    <p>
+      the <code>doc</code> in the <code>for</code>-loop is not mutable. So we
+      need the <code>data_source</code> as an mut array. In the docs we find:
+    </p>
+    <blockquote>
+      <p>
+        <code
+          >pub fn as_array_mut(&amp;mut self) -&gt; Option&lt;&amp;mut
+          Vec&lt;Value&gt;&gt;</code
+        >
+      </p>
+      <p>
+        If the Value is an Array, returns the associated mutable vector. Returns
+        None otherwise.
+      </p>
+    </blockquote>
+    <p>Let's use that.</p>
+    <pre
+      class="hljs"
+    ><code><div>    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">doc_update</span></span>(doc: &amp;<span class="hljs-keyword">mut</span> Value) {
+        doc[<span class="hljs-string">"lexiconName"</span>] = <span class="hljs-string">"skbl2"</span>.into();
+        doc[<span class="hljs-string">"lexiconOrder"</span>] = <span class="hljs-number">48</span>.into();
+    }
+
+    <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source.as_array_mut().expect(<span class="hljs-string">"an array"</span>) {
+        doc_update(doc);
+    }
+</div></code></pre>
+    <p>Running that gives us.</p>
+    <pre class="hljs"><code><div>&gt; cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+error[E0596]: cannot borrow `data_source` as mutable, as it is not declared as mutable
+  --&gt; src/main.rs:18:16
+   |
+18 |     <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> data_source.as_array_mut().expect(<span class="hljs-string">"an array"</span>) {
+   |                ^^^^^^^^^^^^^^^^^^^^^^^^^^ cannot borrow as mutable
+   |
+<span class="hljs-built_in">help</span>: consider changing this to be mutable
+   |
+11 |     <span class="hljs-built_in">let</span> mut data_source = load_from_file(<span class="hljs-string">"data/skbl.json"</span>);
+   |         +++
+
+For more information about this error, try `rustc --explain E0596`.
+error: could not compile `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) due to previous error
+</div></code></pre>
+    <p>
+      Of course, we need that specify that <code>data_source</code> can be
+      mutated.
+    </p>
+    <pre
+      class="hljs"
+    ><code><div>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> data_source = load_from_file(<span class="hljs-string">"data/skbl.json"</span>);
+</div></code></pre>
+    <p>And, bang, it works!</p>
+    <pre class="hljs"><code><div>❯ cargo run
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+    Finished dev [unoptimized + debuginfo] target(s) <span class="hljs-keyword">in</span> 0.31s
+     Running `target/debug/<span class="hljs-built_in">read</span>-json-in-rust`
+Elapsed time 4.908370832s
+</div></code></pre>
+    <p>But the time it took, almost 5 seconds, what can be done about that?</p>
+    <h2 id="optimizations">Optimizations</h2>
+    <p>
+      Let's try with some optimizations, we turn them on by passing
+      <code>--release</code> to <code>cargo run</code>.
+    </p>
+    <pre class="hljs"><code><div>&gt; cargo run --release
+   Compiling serde v1.0.160
+   Compiling serde_json v1.0.96
+   Compiling ryu v1.0.13
+   Compiling itoa v1.0.6
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+    Finished release [optimized] target(s) <span class="hljs-keyword">in</span> 4.93s
+     Running `target/release/<span class="hljs-built_in">read</span>-json-in-rust`
+Elapsed time 687.616607ms
+</div></code></pre>
+    <p>Ok, that was better!</p>
+    <h2 id="memory-usage">Memory usage</h2>
+    <p>How does the memory usage look for the rust version?</p>
+    <p>
+      The measure memory usage with
+      <a href="https://pypi.org/project/memory-profiler/">memory-profiler</a>
+    </p>
+    <pre
+      class="hljs"
+    ><code><div>&gt; mprof run target/release/<span class="hljs-built_in">read</span>-json-in-rust
+mprof: Sampling memory every 0.1s
+running new process
+Elapsed time 730.408381ms
+</div></code></pre>
+    <p>
+      Memory usage for the rust program:
+      <img
+        src="https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/rust_release_memory_usage.png"
+        alt="Memory usage of rust program"
+      />
+    </p>
+    <p>
+      And as reference, the memory usage for the python program:
+      <img
+        src="https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/python_memory_usage.png"
+        alt="Memory usage of python program"
+      />
+    </p>
+    <p>
+      Rust use slightly more memory but their memory usage is in the same
+      magnitude.
+    </p>
+    <h2 id="read-file-to-a-string">Read file to a string</h2>
+    <p>
+      Sometimes the loading can be improved by reading the whole file to a
+      <code>String</code>. Let's try that:
+    </p>
+    <pre
+      class="hljs"
+    ><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">load_from_file</span></span>(path: &amp;<span class="hljs-built_in">str</span>) -&gt; Value {
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> content = <span class="hljs-built_in">String</span>::new();
+    <span class="hljs-keyword">let</span> file = File::open(path)
+        .expect(<span class="hljs-string">"a valid path"</span>)
+        .read_to_string(&amp;<span class="hljs-keyword">mut</span> content)
+        .expect(<span class="hljs-string">"a valid JSON file"</span>);
+    serde_json::from_str(&amp;content).expect(<span class="hljs-string">"successfully parsed json"</span>)
+}
+</div></code></pre>
+    <p>So running that gives us:</p>
+    <pre class="hljs"><code><div>&gt; cargo run --release
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+warning: unused import: `BufReader`
+ --&gt; src/main.rs:3:15
+  |
+3 | use std::io::{BufReader, BufWriter};
+  |               ^^^^^^^^^
+  |
+  = note: `<span class="hljs-comment">#[warn(unused_imports)]` on by default</span>
+
+error[E0599]: no method named `read_to_string` found <span class="hljs-keyword">for</span> struct `File` <span class="hljs-keyword">in</span> the current scope
+   --&gt; src/main.rs:30:10
+    |
+28  |       <span class="hljs-built_in">let</span> file = File::open(path)
+    |  ________________-
+29  | |         .expect(<span class="hljs-string">"a valid path"</span>)
+30  | |         .read_to_string(&amp;mut content)
+    | |         -^^^^^^^^^^^^^^ method not found <span class="hljs-keyword">in</span> `File`
+    | |_________|
+    |
+    |
+   ::: /home/kristoffer/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/library/std/src/io/mod.rs:769:8
+    |
+769 |       fn read_to_string(&amp;mut self, buf: &amp;mut String) -&gt; Result&lt;usize&gt; {
+    |          -------------- the method is available <span class="hljs-keyword">for</span> `File` here
+    |
+    = <span class="hljs-built_in">help</span>: items from traits can only be used <span class="hljs-keyword">if</span> the trait is <span class="hljs-keyword">in</span> scope
+<span class="hljs-built_in">help</span>: the following trait is implemented but not <span class="hljs-keyword">in</span> scope; perhaps add a `use` <span class="hljs-keyword">for</span> it:
+    |
+2   + use std::io::Read;
+    |
+
+For more information about this error, try `rustc --explain E0599`.
+warning: `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) generated 1 warning
+error: could not compile `<span class="hljs-built_in">read</span>-json-in-rust` (bin <span class="hljs-string">"read-json-in-rust"</span>) due to previous error; 1 warning emitted
+</div></code></pre>
+    <p>
+      So we get a warning for an unused import and an error: no method
+      <code>read_to_string</code> found for struct <code>File</code>
+    </p>
+    <p>
+      Hm, but later it says that the method is available for File in the
+      <strong><em>trait</em></strong> <code>std::io::Read</code>. A trait in
+      rust is an interface type, and, as the compiler suggest, a trait must be
+      in scope to able to use it.
+    </p>
+    <p>So let bring it in scope by adding <code>use std::io::Read</code>.</p>
+    <pre class="hljs"><code><div>&gt; cargo run --release
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+    Finished release [optimized] target(s) <span class="hljs-keyword">in</span> 0.56s
+     Running `target/release/<span class="hljs-built_in">read</span>-json-in-rust`
+Elapsed time 425.541856ms
+</div></code></pre>
+    <p>Yes, that improved the running time.</p>
+    <p>How is the memory usage changed?</p>
+    <p>
+      <img
+        src="https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/rust_release_string_memory_usage.png"
+        alt="Memory usage of rust program read all content to String"
+      />
+    </p>
+    <h4 id="can-we-use-the-same-technic-when-writing-to-a-file">
+      Can we use the same technic when writing to a file?
+    </h4>
+    <pre
+      class="hljs"
+    ><code><div>fn dump_to_file(value: &amp;Value, path: &amp;str) {
+<span class="hljs-deletion">-    let writer = BufWriter::new(File::create(path).expect("failed to create file"));</span>
+<span class="hljs-deletion">-    serde_json::to_writer(writer, value).expect("failed to serialize json")</span>
+<span class="hljs-addition">+    let buffer = serde_json::to_string(value).expect("failed to serialize json");</span>
+<span class="hljs-addition">+    let mut file = File::create(path).expect("failed to create file");</span>
+<span class="hljs-addition">+    file.write_all(buffer.as_bytes()).expect("write to succeed");</span>
+
+}
+</div></code></pre>
+    <p>First, running this change with our BufReader-version:</p>
+    <pre class="hljs"><code><div>&gt; cargo run --release
+    Finished release [optimized] target(s) <span class="hljs-keyword">in</span> 0.01s
+     Running `target/release/<span class="hljs-built_in">read</span>-json-in-rust`
+Elapsed time 628.662968ms
+</div></code></pre>
+    <p>Yes, some improvement, but not as big as reading everything.</p>
+    <p>And then running it with our version to reads the whole file:</p>
+    <pre class="hljs"><code><div>&gt; cargo run --release
+   Compiling <span class="hljs-built_in">read</span>-json-in-rust v0.1.0 (..https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/dev-tutorials/<span class="hljs-built_in">read</span>-json-in-rust)
+    Finished release [optimized] target(s) <span class="hljs-keyword">in</span> 0.48s
+     Running `target/release/<span class="hljs-built_in">read</span>-json-in-rust`
+Elapsed time 363.911526ms
+</div></code></pre>
+    <p>
+      And we can se that we keep the slight improvement, but the big difference
+      is made by read the whole file.
+    </p>
+    <p>
+      And that slight improvement is followed by a slight increase in the memory
+      usage.
+    </p>
+    <p>
+      <img
+        src="https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/rust_release_more_string_memory_usage.png"
+        alt="Memory usage when reading and writing to strings"
+      />
+    </p>
+    <h4 id="can-we-use-the-same-technic-in-python">
+      Can we use the same technic in Python?
+    </h4>
+    <p>Glad you asked, let's try it.</p>
+    <pre class="hljs"><code><div>def load_from_file(path: str) -&gt; typing.Any:
+    with open(path) as file:
+<span class="hljs-deletion">-        return json.load(file)</span>
+<span class="hljs-addition">+        source = file.read()</span>
+<span class="hljs-addition">+        return json.loads(source)</span>
+</div></code></pre>
+    <p>And running it gives ...</p>
+    <pre class="hljs"><code><div>&gt; python read_json_in_python.py
+Elapsed time: 1.5982872919994406 s
+</div></code></pre>
+    <p>a slight improvement, and how does the memory usage change?</p>
+    <pre class="hljs"><code><div>&gt; mprof run python read_json_in_python.py
+mprof: Sampling memory every 0.1s
+running new process
+Elapsed time: 1.6285033419990214 s
+</div></code></pre>
+    <p>
+      <img
+        src="https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/python_string_memory_usage.png"
+        alt="Memory usage in Python read whole file"
+      />
+    </p>
+    <p>
+      Interesting to see that the maximum memory usage decreases when we read
+      the whole file to memory.
+    </p>
+    <p>
+      And if we dump the JSON to a string first and then writes the string to a
+      file.
+    </p>
+    <pre
+      class="hljs"
+    ><code><div>def dump_to_file(value: list[typing.Any], path: str):
+    with open(path, mode="w") as file:
+<span class="hljs-deletion">-        json.dump(value, file)</span>
+<span class="hljs-addition">+        buffer = json.dumps(value)</span>
+<span class="hljs-addition">+        file.write(buffer)</span>
+</div></code></pre>
+    <p>Running it:</p>
+    <pre class="hljs"><code><div>&gt; python read_json_in_python.py
+Elapsed time: 1.0124508890003199 s
+</div></code></pre>
+    <p>Wow, so there we found a quite big improvement!</p>
+    <p>
+      And again, let's look at the memory usage:
+      <img
+        src="https://github.com/spraakbanken/dev-tutorials/tree/main/read-json-in-rust/python_more_string_memory_usage.png"
+        alt="Memory usage in Python when reading and writing to strings"
+      />
+    </p>
+    <p>And the memory usage is less than our initial version.</p>
+    <h2 id="deserialize-to-vec-directly">Deserialize to Vec directly</h2>
+    <p>
+      One strength of rust and serde is that we can deserialize directly to many
+      types.
+    </p>
+    <p>So let's try to deserialize to <code>Vec&lt;Value&gt;</code> instead.</p>
+    <pre
+      class="hljs"
+    ><code><div><span class="hljs-deletion">-fn load_from_file(path: &amp;str) -&gt; Value {</span>
+<span class="hljs-addition">+fn load_from_file(path: &amp;str) -&gt; Vec&lt;Value&gt; {</span>
+
+<span class="hljs-deletion">-   for doc in data_source.as_array_mut().expect("an array") {</span>
+<span class="hljs-addition">+   for doc in &amp;mut data_source {</span>
+
+<span class="hljs-deletion">-fn dump_to_file(value: &amp;Value, path: &amp;str) {</span>
+<span class="hljs-addition">+fn dump_to_file(value: &amp;[Value], path: &amp;str) {</span>
+
+</div></code></pre>
+    <p>What is the different?</p>
+    <ul>
+      <li>
+        If our file doesn't contains an array, <code>load_from_file</code> will
+        fail, compared to that the call <code>as_array_mut</code> fails.
+        <ul>
+          <li>How strict are you about the incoming data?</li>
+        </ul>
+      </li>
+      <li>
+        We write <code>dump_to_file</code> to take a array slice
+        <code>&amp;[Value]</code> instead of a <code>Vec</code>, then we can
+        call that function with anything that can be read as a slice.
+      </li>
+    </ul>
+    <p>Does it matter?</p>
+    <pre class="hljs"><code><div>&gt; cargo run --release
+    Finished release [optimized] target(s) <span class="hljs-keyword">in</span> 0.01s
+     Running `target/release/<span class="hljs-built_in">read</span>-json-in-rust`
+Elapsed time 408.153712ms
+</div></code></pre>
+    <p>No, not for the speed. So you can choose what fits your program best.</p>
+    <h2 id="conclusion">Conclusion</h2>
+    <p>
+      We have ported a simple Python program to Rust and seen a speedup by 2.5
+      to 4.4 times at the expense of using a bit more memory.
+    </p>
+    <p>
+      In Python we saw a 1.7 times improvement when we first read the file to
+      str and then parse the JSON and when writing, first dumping to string and
+      then writes that string to file. And the interesting thing was that we
+      also used less memory this way.
+    </p>
+    <h2 id="next-steps">Next steps</h2>
+    <ul>
+      <li>
+        We read the whole find to memory, for large files it is needed to only
+        read a document at a time and then write the updated to a the file.
+      </li>
+      <li>
+        We read the documents as JSON value, we can also validate the data while
+        deserializing.
+      </li>
+      <li>We should handle errors better (and report them to the user).</li>
+    </ul>
+    <h2 id="references">References</h2>
+    <ul>
+      <li>
+        <a href="https://doc.rust-lang.org/book/title-page.html">Rust Book</a>
+        the official guide to Rust.
+      </li>
+      <li>
+        <a href="https://play.rust-lang.org">Rust Playground</a> try out some
+        rust code in your browser.
+      </li>
+    </ul>
+  </body>
+</html>
