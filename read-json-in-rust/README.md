@@ -339,7 +339,7 @@ use serde_json::Value;
 fn load_from_file(path: &str) -> Value {
     let file = File::open(path).expect("a valid path");
     let reader = BufReader::new(file); // (2)
-    return serde_json::from_reader(reader).expect("successfully parsed JSON")
+    serde_json::from_reader(reader).expect("successfully parsed JSON")
 }
 ```
 
