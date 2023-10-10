@@ -243,7 +243,10 @@ use serde_json::Value; // (1)
 
 fn load_from_file(path: &str) -> Value { // (2)
     let file = File::open(path).expect("a valid path"); // (4)
-    return serde_json::from_reader(file).expect("successfully parsed JSON") // (5)
+    // Idiomatic Rust: implicit return // (5)
+    serde_json::from_reader(file).expect("successfully parsed JSON") // (5)
+    // or unidiomatic explicit return // (5)
+    // return serde_json::from_reader(file).expect("successfully parsed JSON"); // (5)
 }
 ```
 
