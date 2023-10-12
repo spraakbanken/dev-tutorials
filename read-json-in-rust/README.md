@@ -101,7 +101,6 @@ The macro is because rust functions can't handle variadic functions, but rust ma
 ### Add timings
 
 ```rust
-
 use std::time::Instant;
 
 fn main() {
@@ -131,6 +130,8 @@ So let's add the function `load_from_file`.
 Let us begin to sketch a solution.
 
 ```rust
+use std::time::Instant;
+
 fn main() {
     let start = Instant::now();
 
@@ -238,9 +239,14 @@ use std::time::Instant;
 
 use serde_json::Value; // (1)
 
+...
+
 fn load_from_file(path: &str) -> Value { // (2)
     let file = File::open(path).expect("a valid path"); // (4)
+    // Idiomatic Rust: implicit return // (5)
     serde_json::from_reader(file).expect("successfully parsed JSON") // (5)
+    // or unidiomatic explicit return // (5)
+    // return serde_json::from_reader(file).expect("successfully parsed JSON"); // (5)
 }
 ```
 
@@ -328,6 +334,8 @@ use std::time::Instant;
 
 use serde_json::Value;
 
+...
+
 fn load_from_file(path: &str) -> Value {
     let file = File::open(path).expect("a valid path");
     let reader = BufReader::new(file); // (2)
@@ -360,11 +368,10 @@ Ok, some improvment, from 37.3s to 3.71s, but still twice as slow as `Python`. B
 
 ## Dump JSON
 
-Next up is to write the json to a new file, we add these lines to our main:
+Next up is to write the json to a new file, we add this line to our main:
 
 ```rust
-    let updated_data = data_source;
-    dump_to_file(&updated_data, "data/skbl2_rust.json");
+    dump_to_file(&data_source, "data/skbl2_rust.json");
 ```
 
 And add this function:
@@ -681,7 +688,7 @@ For more information about this error, try `rustc --explain E0596`.
 error: could not compile `read-json-in-rust` (bin "read-json-in-rust") due to previous error
 ```
 
-Of course, we need that specify that `data_source` can be mutated.
+Of course, we need to specify that `data_source` can be mutated.
 ```rust
     let mut data_source = load_from_file("data/skbl.json");
 ```
@@ -717,12 +724,13 @@ Ok, that was better!
 ### Memory usage
 How does the memory usage look for the rust version?
 
-The measure memory usage with [memory-profiler](https://pypi.org/project/memory-profiler/)
+We measure memory usage with [memory-profiler](https://pypi.org/project/memory-profiler/)
 ```bash
 > mprof run target/release/read-json-in-rust
 mprof: Sampling memory every 0.1s
 running new process
 Elapsed time 730.408381ms
+> mprof plot
 ```
 Memory usage for the rust program:
 ![Memory usage of rust program](./rust_release_memory_usage.png)
@@ -803,7 +811,7 @@ How is the memory usage changed?
 
 ![Memory usage of rust program read all content to String](./rust_release_string_memory_usage.png)
 
-#### Can we use the same technic when writing to a file?
+#### Can we use the same technique when writing to a file?
 
 ```diff
 fn dump_to_file(value: &Value, path: &str) {
@@ -812,7 +820,6 @@ fn dump_to_file(value: &Value, path: &str) {
 +    let buffer = serde_json::to_string(value).expect("failed to serialize json");
 +    let mut file = File::create(path).expect("failed to create file");
 +    file.write_all(buffer.as_bytes()).expect("write to succeed");
-
 }
 ```
 
@@ -935,7 +942,7 @@ In Python we saw a 1.7 times improvement when we first read the file to str and 
 
 ## Next steps
 
-- We read the whole find to memory, for large files it is needed to only read a document at a time and then write the updated to a the file.
+- We read the whole file to memory, for large files it is needed to only read a document at a time and then write the updated one to the file.
 - We read the documents as JSON value, we can also validate the data while deserializing.
 - We should handle errors better (and report them to the user).
 
